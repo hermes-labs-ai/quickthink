@@ -41,6 +41,8 @@ class QuickThinkConfig:
     bypass_char_threshold: int = 120
     adaptive_routing: bool = True
     route_skip_score_threshold: int = 1
+    mode: str = "lite"
+    continuity_hint: str | None = None
 
     @classmethod
     def with_model_profile(cls, model: str, ollama_url: str = "http://localhost:11434") -> "QuickThinkConfig":
