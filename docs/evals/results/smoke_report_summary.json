@@ -1,0 +1,85 @@
+{
+  "models": {
+    "qwen2.5:1.5b": {
+      "modes": {
+        "direct": {
+          "avg_score": 5.333333333333333,
+          "p50_ms": 8583.08,
+          "p95_ms": 11362.829,
+          "avg_total_ms": 8813.056666666665,
+          "rows": 3
+        },
+        "lite": {
+          "avg_score": 4.0,
+          "p50_ms": 6824.43,
+          "p95_ms": 6896.124,
+          "avg_total_ms": 4811.503333333333,
+          "rows": 3
+        },
+        "two_pass": {
+          "avg_score": 4.666666666666667,
+          "p50_ms": 5073.44,
+          "p95_ms": 5807.174,
+          "avg_total_ms": 3890.0466666666666,
+          "rows": 3
+        }
+      }
+    }
+  },
+  "pairs": {
+    "qwen2.5:1.5b:lite_vs_direct": {
+      "overall": {
+        "wins": 0,
+        "losses": 1,
+        "ties": 2,
+        "raw_win_rate": 0.0,
+        "non_tie_win_rate": 0.0
+      },
+      "by_group": {
+        "reasoning": {
+          "wins": 0,
+          "losses": 1,
+          "ties": 2,
+          "raw_win_rate": 0.0,
+          "non_tie_win_rate": 0.0
+        }
+      }
+    },
+    "qwen2.5:1.5b:two_pass_vs_direct": {
+      "overall": {
+        "wins": 1,
+        "losses": 1,
+        "ties": 1,
+        "raw_win_rate": 0.3333333333333333,
+        "non_tie_win_rate": 0.5
+      },
+      "by_group": {
+        "reasoning": {
+          "wins": 1,
+          "losses": 1,
+          "ties": 1,
+          "raw_win_rate": 0.3333333333333333,
+          "non_tie_win_rate": 0.5
+        }
+      }
+    },
+    "qwen2.5:1.5b:lite_vs_two_pass": {
+      "overall": {
+        "wins": 0,
+        "losses": 2,
+        "ties": 1,
+        "raw_win_rate": 0.0,
+        "non_tie_win_rate": 0.0
+      },
+      "by_group": {
+        "reasoning": {
+          "wins": 0,
+          "losses": 2,
+          "ties": 1,
+          "raw_win_rate": 0.0,
+          "non_tie_win_rate": 0.0
+        }
+      }
+    }
+  }
+}

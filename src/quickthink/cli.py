@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
 import typer
 
-from .config import MODEL_PROFILES, QuickThinkConfig
+from .config import MODEL_PROFILES, PRESET_PROFILES, SUPPORTED_MODELS, QuickThinkConfig
 from .engine import QuickThinkEngine
 from .ui_server import serve_ui
 
@@ -20,11 +21,24 @@ def list_models() -> None:
 
 
 @app.command()
+def list_presets() -> None:
+    for preset, profile in PRESET_PROFILES.items():
+        typer.echo(f"{preset} -> {json.dumps(profile)}")
+
+
+@app.command()
+def compatibility() -> None:
+    for model in SUPPORTED_MODELS:
+        typer.echo(model)
+
+
+@app.command()
 def ask(
     prompt: str = typer.Argument(..., help="User prompt"),
     model: str = typer.Option("qwen2.5:1.5b", help="Ollama model"),
     ollama_url: str = typer.Option("http://localhost:11434", help="Ollama base URL"),
     mode: str = typer.Option("lite", help="Execution mode: lite or two_pass"),
+    preset: str = typer.Option("balanced", help="Preset profile: fast, balanced, strict"),
     show_plan: bool = typer.Option(False, help="Show compressed plan in terminal output"),
     show_route: bool = typer.Option(False, help="Show routing diagnostics"),
     log_file: Optional[Path] = typer.Option(None, help="Optional JSONL log file"),
@@ -33,7 +47,10 @@ def ask(
 ) -> None:
     if mode not in {"lite", "two_pass"}:
         raise typer.BadParameter("mode must be 'lite' or 'two_pass'")
+    if preset not in PRESET_PROFILES:
+        raise typer.BadParameter("preset must be one of: fast, balanced, strict")
     config = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
+    config.apply_preset(preset)
     config.bypass_short_prompts = bypass_short_prompts
     config.mode = mode
     config.continuity_hint = continuity_hint
@@ -58,7 +75,9 @@ def ask(
                     {
                         "prompt": prompt,
                         "model": model,
+                        "preset": config.preset,
                         "mode": result.mode,
+                        "timestamp": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
                         "answer": result.answer,
                         "plan": result.plan,
                         "bypassed": result.bypassed,
@@ -80,24 +99,30 @@ def bench(
     model: str = typer.Option("qwen2.5:1.5b", help="Ollama model"),
     ollama_url: str = typer.Option("http://localhost:11434", help="Ollama base URL"),
     runs: int = typer.Option(3, min=1, max=20, help="Number of runs per mode"),
+    preset: str = typer.Option("balanced", help="Preset profile: fast, balanced, strict"),
 ) -> None:
+    if preset not in PRESET_PROFILES:
+        raise typer.BadParameter("preset must be one of: fast, balanced, strict")
     lite_latencies: list[float] = []
     two_pass_latencies: list[float] = []
     direct_latencies: list[float] = []
 
     config_lite = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
+    config_lite.apply_preset(preset)
     config_lite.mode = "lite"
     engine_lite = QuickThinkEngine(config_lite)
     for _ in range(runs):
         lite_latencies.append(engine_lite.run(prompt).total_latency_ms)
 
     config_two_pass = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
+    config_two_pass.apply_preset(preset)
     config_two_pass.mode = "two_pass"
     engine_two_pass = QuickThinkEngine(config_two_pass)
     for _ in range(runs):
         two_pass_latencies.append(engine_two_pass.run(prompt).total_latency_ms)
 
     config_direct = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
+    config_direct.apply_preset(preset)
     config_direct.mode = "lite"
     config_direct.bypass_short_prompts = True
     config_direct.adaptive_routing = False
@@ -111,6 +136,7 @@ def bench(
     avg_direct = sum(direct_latencies) / len(direct_latencies)
 
     typer.echo(f"model={model}")
+    typer.echo(f"preset={preset}")
     typer.echo(f"avg_lite_ms={avg_lite:.2f}")
     typer.echo(f"avg_two_pass_ms={avg_two_pass:.2f}")
     typer.echo(f"avg_direct_ms={avg_direct:.2f}")

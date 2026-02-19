@@ -1,0 +1,40 @@
+{
+  "generated_at": "2026-02-18T18:50:26+00:00",
+  "preset": "balanced",
+  "runs_per_prompt": 1,
+  "prompts": [
+    "In exactly five words, summarize tiny-model reliability."
+  ],
+  "models": [
+    {
+      "model": "qwen2.5:1.5b",
+      "preset": "balanced",
+      "direct_p50_ms": 2690.67,
+      "lite_p50_ms": 3905.5,
+      "lite_p95_ms": 3905.5,
+      "two_pass_p50_ms": 7742.86,
+      "lite_overhead_p50_ms": 1214.83,
+      "support_status": "WARN"
+    },
+    {
+      "model": "mistral:7b",
+      "preset": "balanced",
+      "direct_p50_ms": 3523.49,
+      "lite_p50_ms": 294.4,
+      "lite_p95_ms": 294.4,
+      "two_pass_p50_ms": 2949.86,
+      "lite_overhead_p50_ms": -3229.1,
+      "support_status": "PASS"
+    },
+    {
+      "model": "gemma3:27b",
+      "preset": "balanced",
+      "direct_p50_ms": 40287.19,
+      "lite_p50_ms": 6125.02,
+      "lite_p95_ms": 6125.02,
+      "two_pass_p50_ms": 6127.54,
+      "lite_overhead_p50_ms": -34162.17,
+      "support_status": "PASS"
+    }
+  ]
+}

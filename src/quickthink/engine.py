@@ -36,7 +36,7 @@ class QuickThinkResult:
 class QuickThinkEngine:
     def __init__(self, config: QuickThinkConfig) -> None:
         self.config = config
-        self.client = OllamaClient(config.ollama_url)
+        self.client = OllamaClient(config.ollama_url, timeout_s=config.request_timeout_s)
 
     def run(self, prompt: str) -> QuickThinkResult:
         bypass, route_score, selected_budget = should_bypass(prompt, self.config)
@@ -48,6 +48,7 @@ class QuickThinkEngine:
                 temperature=self.config.temperature,
                 top_p=self.config.top_p,
                 max_tokens=512,
+                think=self.config.think,
             )
             answer_ms = (perf_counter() - start) * 1000
             return QuickThinkResult(
@@ -71,6 +72,7 @@ class QuickThinkEngine:
             prompt,
             selected_budget,
             continuity_hint=self.config.continuity_hint,
+            scaffold_rules=self.config.scaffold_rules,
         )
         start = perf_counter()
         raw = self.client.generate(
@@ -79,6 +81,7 @@ class QuickThinkEngine:
             temperature=self.config.temperature,
             top_p=self.config.top_p,
             max_tokens=768,
+            think=self.config.think,
         )
         answer_ms = (perf_counter() - start) * 1000
 
@@ -113,6 +116,7 @@ class QuickThinkEngine:
             temperature=min(self.config.temperature, 0.3),
             top_p=self.config.top_p,
             max_tokens=selected_budget,
+            think=self.config.think,
         )
         plan_ms = (perf_counter() - start) * 1000
         plan = normalize_plan(plan_raw.get("response", ""))
@@ -128,6 +132,7 @@ class QuickThinkEngine:
                 temperature=0.1,
                 top_p=self.config.top_p,
                 max_tokens=selected_budget + 8,
+                think=self.config.think,
             )
             plan_ms += (perf_counter() - start) * 1000
             repaired_plan = normalize_plan(repair_raw.get("response", ""))
@@ -144,6 +149,7 @@ class QuickThinkEngine:
             temperature=self.config.temperature,
             top_p=self.config.top_p,
             max_tokens=768,
+            think=self.config.think,
         )
         answer_ms = (perf_counter() - start) * 1000
 

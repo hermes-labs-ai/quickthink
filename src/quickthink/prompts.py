@@ -37,13 +37,21 @@ def make_plan_repair_prompt(user_prompt: str, bad_plan: str, budget: int) -> str
     )
 
 
-def make_inline_plan_answer_prompt(user_prompt: str, budget: int, continuity_hint: str | None = None) -> str:
+def make_inline_plan_answer_prompt(
+    user_prompt: str,
+    budget: int,
+    continuity_hint: str | None = None,
+    scaffold_rules: str | None = None,
+) -> str:
     hint_line = ""
     if continuity_hint:
         hint_line = (
             "Optional continuity hint is provided below. Use it only if clearly useful.\n"
             f"Hint: {continuity_hint}\n"
         )
+    rules_line = ""
+    if scaffold_rules:
+        rules_line = f"Additional scaffold rules:\n- {scaffold_rules}\n"
     return (
         "Generate a compact internal plan prefix and then the answer in one response.\n"
         "Output format must be exactly:\n"
@@ -59,6 +67,7 @@ def make_inline_plan_answer_prompt(user_prompt: str, budget: int, continuity_hin
         "- direct final answer\n"
         "- do not mention internal planning\n"
         "- no extra section headers\n"
+        f"{rules_line}"
         f"{hint_line}\n"
         f"User task:\n{user_prompt}\n"
     )

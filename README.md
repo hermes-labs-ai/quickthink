@@ -42,10 +42,22 @@ List supported profiles:
 quickthink list-models
 ```
 
+List preset routing profiles:
+
+```bash
+quickthink list-presets
+```
+
+Show officially supported compatibility models:
+
+```bash
+quickthink compatibility
+```
+
 Ask with compressed planning:
 
 ```bash
-quickthink ask "How would a cow round up a border collie?" --model qwen2.5:1.5b
+quickthink ask "How would a cow round up a border collie?" --model qwen2.5:1.5b --preset balanced
 ```
 
 Show plan in terminal:
@@ -84,6 +96,71 @@ Benchmark all three modes (lite, two_pass, direct):
 quickthink bench "Design a robust parser for CSV with malformed quotes" --model qwen2.5:1.5b --runs 3
 ```
 
+## One-Command Quickstart Demo
+
+Run full local demo setup and artifact generation:
+
+```bash
+bash scripts/demo/quickstart.sh
+```
+
+It does:
+- Python env + package install
+- `ollama pull` for supported models
+- Sample A/B/C eval run
+- Result validation
+- Markdown/HTML report generation
+- Compatibility snapshot update
+
+Optional environment flags:
+- `QUICKTHINK_PRESET=fast|balanced|strict`
+- `QUICKTHINK_LIMIT=<n>` (number of prompts from canonical set)
+- `QUICKTHINK_RUNS=<n>`
+- `QUICKTHINK_RUN_JUDGE=1` (switch judge backend from `rule` to `ollama`)
+- `QUICKTHINK_JUDGE_MODEL=<model>`
+
+## Reports
+
+Canonical report flow:
+
+```bash
+python3 scripts/eval_harness/run_suite.py \
+  --prompt-set docs/evals/prompt_set.jsonl \
+  --out docs/evals/results/run-<timestamp>.jsonl \
+  --manifest-out docs/evals/results/manifest-<timestamp>.json \
+  --runs 3
+
+python3 scripts/eval_harness/judge_suite.py \
+  --prompt-set docs/evals/prompt_set.jsonl \
+  --results docs/evals/results/run-<timestamp>.jsonl \
+  --out docs/evals/results/judged-<timestamp>.jsonl \
+  --backend rule
+
+python3 scripts/eval_harness/validate_judged_results.py \
+  --path docs/evals/results/judged-<timestamp>.jsonl
+
+python3 scripts/eval_harness/report_suite.py \
+  --runs docs/evals/results/run-<timestamp>.jsonl \
+  --judged docs/evals/results/judged-<timestamp>.jsonl \
+  --out-json docs/evals/results/report-<timestamp>.json \
+  --out-md docs/evals/results/report-<timestamp>.md \
+  --out-html docs/evals/results/report-<timestamp>.html
+```
+
+Legacy helpers in `scripts/evals/*` remain available for smoke/demo use only.
+
+## Compatibility Matrix
+
+- Supported models are fixed to:
+  - `qwen2.5:1.5b`
+  - `mistral:7b`
+  - `gemma3:27b`
+- Regenerate matrix + snapshot with:
+
+```bash
+python3 scripts/evals/compat_matrix_snapshot.py
+```
+
 Launch local web UI (for eval/scaffolding testing):
 
 ```bash
@@ -91,6 +168,11 @@ quickthink ui
 ```
 
 Then open `http://127.0.0.1:7860` if it does not open automatically.
+
+UI eval safety gates:
+- Preflight is required before any eval run (`validate_prompt_set.py` must return `status=OK`).
+- Run-file ingestion is blocked unless `validate_results.py` returns `status=OK`.
+- UI displays validator output and dataset SHA256 for reproducible/comparable runs.
 
 ## Latency goals
 

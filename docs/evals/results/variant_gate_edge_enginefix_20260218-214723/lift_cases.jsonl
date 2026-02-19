@@ -1,0 +1,3 @@
+{"model": "llama3.2:latest", "mode": "lite_v4_check_step", "prompt_id": "E010", "run_index": 1, "direct_score": 4.0, "variant_score": 7.0, "delta": 3.0}
+{"model": "llama3.2:latest", "mode": "lite_v1_constraint_first", "prompt_id": "E010", "run_index": 1, "direct_score": 4.0, "variant_score": 7.0, "delta": 3.0}
+{"model": "llama3.2:latest", "mode": "lite_v4_check_step", "prompt_id": "E003", "run_index": 1, "direct_score": 4.0, "variant_score": 6.0, "delta": 2.0}

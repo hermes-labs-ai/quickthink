@@ -6,8 +6,9 @@ import httpx
 
 
 class OllamaClient:
-    def __init__(self, base_url: str) -> None:
+    def __init__(self, base_url: str, timeout_s: float = 180.0) -> None:
         self.base_url = base_url.rstrip("/")
+        self.timeout_s = timeout_s
 
     def generate(
         self,
@@ -17,6 +18,7 @@ class OllamaClient:
         temperature: float,
         top_p: float,
         max_tokens: int,
+        think: bool | str | None = None,
     ) -> dict[str, Any]:
         payload = {
             "model": model,
@@ -28,7 +30,9 @@ class OllamaClient:
                 "num_predict": max_tokens,
             },
         }
-        with httpx.Client(timeout=90.0) as client:
+        if think is not None:
+            payload["think"] = think
+        with httpx.Client(timeout=self.timeout_s) as client:
             response = client.post(f"{self.base_url}/api/generate", json=payload)
             response.raise_for_status()
             return response.json()
