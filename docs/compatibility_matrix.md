@@ -13,3 +13,10 @@ Supported models: `qwen2.5:1.5b`, `mistral:7b`, `gemma3:27b`.
 Notes:
 - Status PASS means lite overhead meets target thresholds on snapshot prompts.
 - Re-generate with: `python3 scripts/evals/compat_matrix_snapshot.py`.
+- This snapshot is environment-scoped, not universal. Always publish the following context with any claim:
+  - hardware/runtime details
+  - prompt set and subset size
+  - run count/repeats
+  - generation limits/settings (for example token caps, preset, mode set)
+  - evaluation date and git SHA
+- Interpret large positive/negative overhead deltas cautiously; output-length differences can confound latency.

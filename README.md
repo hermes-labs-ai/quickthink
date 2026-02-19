@@ -6,6 +6,18 @@
 
 The plan can be logged as metadata while hidden from normal UI output.
 
+## What this is / what this is not
+
+What this is:
+- A local middleware layer for Ollama-backed LLM calls.
+- A small CLI for planned-answer generation, routing diagnostics, and local benchmarking.
+- A canonical eval harness for reproducible project-level quality checks.
+
+What this is not:
+- Not a hosted API service.
+- Not a model training framework.
+- Not a replacement for full agent orchestration platforms.
+
 ## Why
 
 Small/local models are fast but often underperform on multi-step tasks.
@@ -33,6 +45,61 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -e '.[dev]'
 ```
+
+## 5-Minute Quickstart
+
+Prerequisite: install and start [Ollama](https://ollama.com/) locally.
+
+```bash
+# 1) Clone and enter repo
+git clone <your-fork-or-this-repo-url> quickthink
+cd quickthink
+
+# 2) Create env and install
+python -m venv .venv
+source .venv/bin/activate
+pip install -e '.[dev]'
+
+# 3) Pull one supported model
+ollama pull qwen2.5:1.5b
+
+# 4) Run your first command
+quickthink ask "Give me a 3-step plan to learn SQL basics" --model qwen2.5:1.5b
+```
+
+If this command works, your local setup is ready.
+
+## Documentation Map
+
+- Docs index: `docs/README.md`
+- First-time setup: `docs/GETTING_STARTED.md`
+- Common failures and fixes: `docs/TROUBLESHOOTING.md`
+
+## Repository Layout
+
+```text
+src/quickthink/         Runtime package (CLI, engine, prompts, routing, UI server)
+scripts/eval_harness/   Canonical evaluation pipeline (run/judge/validate/report)
+scripts/evals/          Legacy smoke/demo helpers (non-canonical)
+scripts/demo/           One-command local demo runner
+docs/evals/             Prompt sets, rubrics, harness specs, deployment gate notes
+docs/release/           Release process and repository audit notes
+tests/                  Unit tests for runtime and harness safety checks
+```
+
+See full architecture + publishability audit:
+`docs/release/REPO_STRUCTURE_AND_PUBLISHABILITY_AUDIT_2026-02-20.md`.
+
+## Canonical vs Legacy Scripts
+
+Canonical project workflows:
+- `scripts/eval_harness/*`: maintained evaluation pipeline for run/judge/validate/report.
+- `scripts/demo/quickstart.sh`: canonical end-to-end local smoke/demo flow.
+
+Legacy helpers (kept for compatibility and ad-hoc smoke checks):
+- `scripts/evals/*`: non-canonical helpers; do not treat as release gate source of truth.
+
+When in doubt, use `scripts/eval_harness/*` and `scripts/demo/quickstart.sh`.
 
 ## Usage
 
@@ -119,6 +186,10 @@ Optional environment flags:
 - `QUICKTHINK_RUN_JUDGE=1` (switch judge backend from `rule` to `ollama`)
 - `QUICKTHINK_JUDGE_MODEL=<model>`
 
+## Troubleshooting
+
+For common setup/runtime failures and fixes, see `docs/TROUBLESHOOTING.md`.
+
 ## Reports
 
 Canonical report flow:
@@ -155,6 +226,9 @@ Legacy helpers in `scripts/evals/*` remain available for smoke/demo use only.
   - `qwen2.5:1.5b`
   - `mistral:7b`
   - `gemma3:27b`
+- Experimental evaluations may include additional models (for example `llama3.2:latest`) in
+  deployment-gate or variant-gate workflows. Treat those as research lanes unless promoted
+  into `SUPPORTED_MODELS` in runtime config.
 - Regenerate matrix + snapshot with:
 
 ```bash
@@ -208,6 +282,33 @@ Excluded from public tracking:
 - Keep version tracks isolated in `codex/*` branches.
 - Merge to `main` only after benchmarks and notes are updated.
 - See `docs/VERSION_NOTES.md` for version-to-version differences.
+
+## Maintainer Commands
+
+Install (editable + dev):
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e '.[dev]'
+```
+
+Test:
+```bash
+PYTHONPATH=src .venv/bin/pytest -q
+```
+
+Lint (basic syntax/import sanity):
+```bash
+python -m compileall src tests scripts
+```
+
+Release docs + checklist:
+```bash
+python3 scripts/release/create_release_notes.py --version <x.y.z>
+```
+Follow:
+- `docs/release/RELEASE_CHECKLIST.md`
+- `docs/release/RELEASE_PROCESS.md`
 
 ## Caveats
 

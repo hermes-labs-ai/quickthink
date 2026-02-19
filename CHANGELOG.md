@@ -14,8 +14,9 @@ Format follows Keep a Changelog principles and semantic versioning.
   - `build_report.py`
   - `compat_matrix_snapshot.py`
 - One-command quickstart script: `scripts/demo/quickstart.sh`.
-- Agent coordination docs and append-only comms channel.
 - Release process and release-notes generator.
+- Repository publishability audit:
+  - `docs/release/REPO_STRUCTURE_AND_PUBLISHABILITY_AUDIT_2026-02-20.md`
 
 ### Changed
 - CLI supports preset selection and compatibility/preset listing.

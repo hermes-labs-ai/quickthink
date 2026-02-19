@@ -1,0 +1,41 @@
+name: Release Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to validate (for release notes generation)"
+        required: true
+        type: string
+
+jobs:
+  release-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Create virtual environment
+        run: python -m venv .venv
+
+      - name: Install dependencies
+        run: .venv/bin/pip install -e '.[dev]'
+
+      - name: Run tests
+        run: PYTHONPATH=src .venv/bin/pytest -q
+
+      - name: Generate release notes draft
+        run: python3 scripts/release/create_release_notes.py --version "${{ inputs.version }}"
+
+      - name: Upload release notes artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-notes-${{ inputs.version }}
+          path: docs/release/RELEASE_NOTES_DRAFT.md
+          if-no-files-found: error

@@ -2,6 +2,10 @@
 
 This project uses semantic versioning.
 
+Primary operator checklist:
+- `docs/release/RELEASE_CHECKLIST.md`
+This checklist is the source-of-truth execution order for release day.
+
 ## Versioning Rules
 - `MAJOR`: breaking API/behavior changes.
 - `MINOR`: backward-compatible feature additions.
@@ -16,13 +20,16 @@ This project uses semantic versioning.
 ## Release Steps
 1. Run quickstart benchmark flow:
    - `bash scripts/demo/quickstart.sh`
-2. Generate compatibility matrix snapshot:
+2. Run tests:
+   - `PYTHONPATH=src .venv/bin/pytest -q`
+3. Generate compatibility matrix snapshot:
    - `python3 scripts/evals/compat_matrix_snapshot.py`
-3. Generate release notes draft:
+4. Generate release notes draft:
    - `python3 scripts/release/create_release_notes.py --version <x.y.z>`
-4. Update `pyproject.toml` version.
-5. Commit with message: `release: v<x.y.z>`.
-6. Tag and push:
+5. Update `pyproject.toml` version.
+6. Update `CHANGELOG.md`.
+7. Commit with message: `release: v<x.y.z>`.
+8. Tag and push:
    - `git tag v<x.y.z>`
    - `git push origin <branch> --tags`
 

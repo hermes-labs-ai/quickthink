@@ -5,6 +5,8 @@ __pycache__/
 logs/
 *.egg-info/
 experiments-local/
+docs/patent/
+hermeslabs-site/
 docs/agent-comms/
 docs/evals/results/
 !docs/evals/results/README.md
