@@ -289,6 +289,10 @@ HTML_PAGE = """<!doctype html>
             <label title="Display planner line in results."><input id="showPlan" type="checkbox" checked /> show plan</label>
             <label title="Display routing metadata like score and plan budget."><input id="showRoute" type="checkbox" checked /> show route info</label>
           </div>
+          <div class="hint">
+            Control help: bypass short prompts = skip planner for short inputs; show plan = reveal planner output;
+            show route info = reveal routing score and plan budget.
+          </div>
         </div>
       </div>
       <div class="actions">
@@ -298,34 +302,6 @@ HTML_PAGE = """<!doctype html>
       </div>
       <div id="runGateHint" class="hint">Preflight required to enable run actions.</div>
       <div id="status" class="status" role="status" aria-live="polite">No run yet. Enter a prompt and run.</div>
-    </section>
-
-    <section class="panel">
-      <h2>4. Ingest Validated Run File <span class="chip adv">Advanced</span></h2>
-      <p>Ingestion is blocked unless <span class="mono">validate_results.py</span> returns <span class="mono">status=OK</span>.</p>
-      <div class="grid">
-        <div class="full">
-          <label for="runFilePath">Run file path (JSONL)</label>
-          <input id="runFilePath" placeholder="docs/evals/results/run-YYYYMMDD-HHMM-batch.jsonl" />
-        </div>
-        <div>
-          <label for="expectedPrompts">Expected prompts</label>
-          <input id="expectedPrompts" type="number" value="120" min="0" />
-        </div>
-        <div>
-          <label for="expectedRuns">Expected runs</label>
-          <input id="expectedRuns" type="number" value="3" min="0" />
-        </div>
-        <div class="full">
-          <label for="models">Models (space-separated)</label>
-          <input id="models" value="qwen2.5:1.5b mistral:7b gemma3:27b" />
-        </div>
-      </div>
-      <div class="actions">
-        <button id="ingestBtn" class="secondary">Validate and Ingest</button>
-      </div>
-      <div id="ingestStatus" class="status" role="status" aria-live="polite"></div>
-      <div class="result" id="ingestOutput">No ingestion yet.</div>
     </section>
 
     <section class="panel">
@@ -362,6 +338,34 @@ HTML_PAGE = """<!doctype html>
       </div>
       <div id="evalSetStatus" class="status" role="status" aria-live="polite"></div>
       <div class="result" id="evalSetOutput">No batch eval run yet.</div>
+    </section>
+
+    <section class="panel">
+      <h2>4. Ingest Validated Run File <span class="chip adv">Advanced</span></h2>
+      <p>Ingestion is blocked unless <span class="mono">validate_results.py</span> returns <span class="mono">status=OK</span>.</p>
+      <div class="grid">
+        <div class="full">
+          <label for="runFilePath">Run file path (JSONL)</label>
+          <input id="runFilePath" placeholder="docs/evals/results/run-YYYYMMDD-HHMM-batch.jsonl" />
+        </div>
+        <div>
+          <label for="expectedPrompts">Expected prompts</label>
+          <input id="expectedPrompts" type="number" value="120" min="0" />
+        </div>
+        <div>
+          <label for="expectedRuns">Expected runs</label>
+          <input id="expectedRuns" type="number" value="3" min="0" />
+        </div>
+        <div class="full">
+          <label for="models">Models (space-separated)</label>
+          <input id="models" value="qwen2.5:1.5b mistral:7b gemma3:27b" />
+        </div>
+      </div>
+      <div class="actions">
+        <button id="ingestBtn" class="secondary">Validate and Ingest</button>
+      </div>
+      <div id="ingestStatus" class="status" role="status" aria-live="polite"></div>
+      <div class="result" id="ingestOutput">No ingestion yet.</div>
     </section>
 
     <section class="panel">
@@ -461,10 +465,16 @@ HTML_PAGE = """<!doctype html>
       el.classList.remove("is-info", "is-success", "is-error");
       if (kind === "success") {
         el.classList.add("is-success");
+        el.setAttribute("role", "status");
+        el.setAttribute("aria-live", "polite");
       } else if (kind === "error") {
         el.classList.add("is-error");
+        el.setAttribute("role", "alert");
+        el.setAttribute("aria-live", "assertive");
       } else {
         el.classList.add("is-info");
+        el.setAttribute("role", "status");
+        el.setAttribute("aria-live", "polite");
       }
     }
 
@@ -479,6 +489,7 @@ HTML_PAGE = """<!doctype html>
     function setPreflightState(ok, sha) {
       runBtn.disabled = !ok;
       runAllBtn.disabled = !ok;
+      runEvalSetBtn.disabled = !ok;
       setStatusMessage(
         preflightStatusEl,
         ok
