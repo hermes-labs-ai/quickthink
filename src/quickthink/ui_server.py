@@ -459,6 +459,7 @@ HTML_PAGE = """<!doctype html>
     const loadResultRowsBtn = document.getElementById("loadResultRowsBtn");
     const resultsBrowseStatusEl = document.getElementById("resultsBrowseStatus");
     const resultsBrowseOutputEl = document.getElementById("resultsBrowseOutput");
+    let preflightOk = false;
 
     function setStatusMessage(el, text, kind = "info") {
       el.textContent = text;
@@ -487,6 +488,7 @@ HTML_PAGE = """<!doctype html>
     }
 
     function setPreflightState(ok, sha) {
+      preflightOk = Boolean(ok);
       runBtn.disabled = !ok;
       runAllBtn.disabled = !ok;
       runEvalSetBtn.disabled = !ok;
@@ -651,7 +653,7 @@ HTML_PAGE = """<!doctype html>
           "error"
         );
       } finally {
-        runEvalSetBtn.disabled = false;
+        runEvalSetBtn.disabled = !preflightOk;
       }
     }
 
@@ -819,8 +821,8 @@ HTML_PAGE = """<!doctype html>
           "error"
         );
       } finally {
-        runAllBtn.disabled = false;
-        runBtn.disabled = false;
+        runAllBtn.disabled = !preflightOk;
+        runBtn.disabled = !preflightOk;
       }
     }
 
@@ -876,8 +878,8 @@ HTML_PAGE = """<!doctype html>
           "error"
         );
       } finally {
-        runBtn.disabled = false;
-        runAllBtn.disabled = false;
+        runBtn.disabled = !preflightOk;
+        runAllBtn.disabled = !preflightOk;
       }
     }
 
