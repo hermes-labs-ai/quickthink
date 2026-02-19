@@ -5,3 +5,8 @@ __pycache__/
 logs/
 *.egg-info/
 experiments-local/
+docs/agent-comms/
+docs/evals/results/
+!docs/evals/results/README.md
+scripts/ops/agent_comms.py
+AGENT.md
