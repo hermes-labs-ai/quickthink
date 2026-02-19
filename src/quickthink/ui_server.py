@@ -33,7 +33,7 @@ HTML_PAGE = """<!doctype html>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>quickthink eval UI</title>
+  <title>QuickThink Local Eval Console</title>
   <style>
     :root {
       --bg: #f6efe5;
@@ -81,7 +81,31 @@ HTML_PAGE = """<!doctype html>
       letter-spacing: .4px;
       font-size: 1.5rem;
     }
+    h2 {
+      margin: 0;
+      letter-spacing: .2px;
+      font-size: 1.1rem;
+    }
     p { margin: .4rem 0 0 0; color: var(--muted); }
+    .flow {
+      margin-top: .7rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+    }
+    .chip {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: .2rem .55rem;
+      background: #fff;
+      font-size: .78rem;
+      color: #333;
+    }
+    .chip.adv {
+      background: #f6fff8;
+      border-color: #b5d9c9;
+      color: #1b5f46;
+    }
     .grid {
       display: grid;
       gap: .8rem;
@@ -112,6 +136,10 @@ HTML_PAGE = """<!doctype html>
     input:focus, select:focus, textarea:focus {
       outline: 2px solid var(--ring);
       outline-offset: 1px;
+    }
+    button:focus-visible {
+      outline: 2px solid var(--ring);
+      outline-offset: 2px;
     }
     .checks {
       display: flex;
@@ -158,6 +186,14 @@ HTML_PAGE = """<!doctype html>
       color: var(--muted);
       min-height: 1.4rem;
     }
+    .status.is-success { color: #0b6e4f; }
+    .status.is-error { color: #b42318; }
+    .hint {
+      margin-top: .45rem;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
     .result {
       white-space: pre-wrap;
       line-height: 1.45;
@@ -192,13 +228,19 @@ HTML_PAGE = """<!doctype html>
 <body>
   <div class="wrap">
     <section class="panel">
-      <h1>quickthink eval UI</h1>
-      <p>Run prompts against local Ollama with the same scaffolding settings as your CLI.</p>
+      <h1>QuickThink Local Eval Console</h1>
+      <p>Run and evaluate local prompts with the same routing and validation gates used by CLI.</p>
+      <div class="flow">
+        <span class="chip">Recommended: 1) Preflight</span>
+        <span class="chip">2) Single Prompt</span>
+        <span class="chip">3) Batch Eval</span>
+        <span class="chip adv">Advanced: Ingest and Browsers</span>
+      </div>
     </section>
 
     <section class="panel">
-      <h1>Preflight</h1>
-      <p>Required before eval runs. Uses validate_prompt_set.py.</p>
+      <h2>1. Preflight Validation (Required)</h2>
+      <p>Required before eval runs. Uses <span class="mono">validate_prompt_set.py</span>.</p>
       <div class="grid">
         <div class="full">
           <label for="promptSetPath">Prompt set path</label>
@@ -206,14 +248,16 @@ HTML_PAGE = """<!doctype html>
         </div>
       </div>
       <div class="actions">
-        <button id="preflightBtn" class="secondary">Run preflight</button>
+        <button id="preflightBtn" class="secondary">Validate Prompt Set</button>
       </div>
-      <div id="preflightStatus" class="status"></div>
+      <div id="preflightStatus" class="status" role="status" aria-live="polite"></div>
       <div class="result" id="preflightSha">Dataset SHA256: (not validated)</div>
-      <div class="result" id="preflightOutput"></div>
+      <div class="result" id="preflightOutput">No preflight run yet. Validate to enable run actions.</div>
     </section>
 
     <section class="panel">
+      <h2>2. Run Single Prompt</h2>
+      <p>Canonical interactive flow for fast testing before batch runs.</p>
       <div class="grid">
         <div>
           <label for="model">Model</label>
@@ -241,23 +285,24 @@ HTML_PAGE = """<!doctype html>
         </div>
         <div class="full">
           <div class="checks">
-            <label><input id="bypass" type="checkbox" checked /> bypass short prompts</label>
-            <label><input id="showPlan" type="checkbox" checked /> show plan</label>
-            <label><input id="showRoute" type="checkbox" checked /> show route info</label>
+            <label title="Skip planner for very short prompts to reduce overhead."><input id="bypass" type="checkbox" checked /> bypass short prompts</label>
+            <label title="Display planner line in results."><input id="showPlan" type="checkbox" checked /> show plan</label>
+            <label title="Display routing metadata like score and plan budget."><input id="showRoute" type="checkbox" checked /> show route info</label>
           </div>
         </div>
       </div>
       <div class="actions">
         <button id="clearBtn">Clear</button>
-        <button id="runAllBtn" class="secondary">Run 3 modes (typed prompt)</button>
-        <button id="runBtn" class="primary">Run prompt</button>
+        <button id="runAllBtn" class="secondary" title="Requires typed prompt.">Compare 3 Modes</button>
+        <button id="runBtn" class="primary" title="Requires successful preflight.">Run Single Prompt</button>
       </div>
-      <div id="status" class="status"></div>
+      <div id="runGateHint" class="hint">Preflight required to enable run actions.</div>
+      <div id="status" class="status" role="status" aria-live="polite">No run yet. Enter a prompt and run.</div>
     </section>
 
     <section class="panel">
-      <h1>Run File Ingestion</h1>
-      <p>Ingestion is blocked unless validate_results.py returns status=OK.</p>
+      <h2>4. Ingest Validated Run File <span class="chip adv">Advanced</span></h2>
+      <p>Ingestion is blocked unless <span class="mono">validate_results.py</span> returns <span class="mono">status=OK</span>.</p>
       <div class="grid">
         <div class="full">
           <label for="runFilePath">Run file path (JSONL)</label>
@@ -277,14 +322,14 @@ HTML_PAGE = """<!doctype html>
         </div>
       </div>
       <div class="actions">
-        <button id="ingestBtn" class="secondary">Validate + ingest run file</button>
+        <button id="ingestBtn" class="secondary">Validate and Ingest</button>
       </div>
-      <div id="ingestStatus" class="status"></div>
-      <div class="result" id="ingestOutput"></div>
+      <div id="ingestStatus" class="status" role="status" aria-live="polite"></div>
+      <div class="result" id="ingestOutput">No ingestion yet.</div>
     </section>
 
     <section class="panel">
-      <h1>Eval Set Runner</h1>
+      <h2>3. Batch Eval Runner</h2>
       <p>Run prompt_set.jsonl across direct/lite/two_pass with run manifest output.</p>
       <div class="grid">
         <div class="full">
@@ -313,14 +358,14 @@ HTML_PAGE = """<!doctype html>
         </div>
       </div>
       <div class="actions">
-        <button id="runEvalSetBtn" class="secondary">Run eval set</button>
+        <button id="runEvalSetBtn" class="secondary">Run Batch Eval</button>
       </div>
-      <div id="evalSetStatus" class="status"></div>
-      <div class="result" id="evalSetOutput"></div>
+      <div id="evalSetStatus" class="status" role="status" aria-live="polite"></div>
+      <div class="result" id="evalSetOutput">No batch eval run yet.</div>
     </section>
 
     <section class="panel">
-      <h1>Prompt Set Browser</h1>
+      <h2>Prompt Set Preview <span class="chip adv">Advanced</span></h2>
       <div class="grid">
         <div class="full">
           <label for="browsePromptPath">Prompt set JSONL path</label>
@@ -328,14 +373,14 @@ HTML_PAGE = """<!doctype html>
         </div>
       </div>
       <div class="actions">
-        <button id="loadPromptsBtn">Load prompts</button>
+        <button id="loadPromptsBtn">Preview Prompts</button>
       </div>
-      <div id="promptBrowseStatus" class="status"></div>
-      <div class="result" id="promptBrowseOutput"></div>
+      <div id="promptBrowseStatus" class="status" role="status" aria-live="polite"></div>
+      <div class="result" id="promptBrowseOutput">No prompts loaded. Confirm prompt-set path, then select Preview Prompts.</div>
     </section>
 
     <section class="panel">
-      <h1>Results Browser</h1>
+      <h2>Result File Explorer <span class="chip adv">Advanced</span></h2>
       <div class="grid">
         <div class="full">
           <label for="resultsFileSelect">Result file</label>
@@ -343,20 +388,21 @@ HTML_PAGE = """<!doctype html>
         </div>
       </div>
       <div class="actions">
-        <button id="refreshResultFilesBtn">Refresh files</button>
-        <button id="loadResultRowsBtn">Load rows</button>
+        <button id="refreshResultFilesBtn">Refresh Result Files</button>
+        <button id="loadResultRowsBtn">Open Rows</button>
       </div>
-      <div id="resultsBrowseStatus" class="status"></div>
-      <div class="result" id="resultsBrowseOutput"></div>
+      <div id="resultsBrowseStatus" class="status" role="status" aria-live="polite"></div>
+      <div class="result" id="resultsBrowseOutput">No result files loaded yet.</div>
     </section>
 
     <section class="panel">
-      <h1>Results</h1>
+      <h2>Run Output and Diagnostics</h2>
+      <p>Glossary: route score = routing complexity signal, plan budget = selected planning token budget.</p>
       <div id="metrics" class="metrics"></div>
-      <div class="result" id="answer"></div>
-      <div class="result" id="plan"></div>
-      <div class="result" id="route"></div>
-      <div class="result" id="allModes"></div>
+      <div class="result" id="answer">No run yet. Run a prompt to view answer, plan, route, and latency metrics.</div>
+      <div class="result" id="plan">Plan hidden. Enable "show plan" to display planner output.</div>
+      <div class="result" id="route">Route details hidden. Enable "show route info" to inspect routing decisions.</div>
+      <div class="result" id="allModes">(no comparison output yet)</div>
     </section>
   </div>
 
@@ -377,6 +423,7 @@ HTML_PAGE = """<!doctype html>
     const metricsEl = document.getElementById("metrics");
     const runBtn = document.getElementById("runBtn");
     const runAllBtn = document.getElementById("runAllBtn");
+    const runGateHintEl = document.getElementById("runGateHint");
     const clearBtn = document.getElementById("clearBtn");
     const preflightBtn = document.getElementById("preflightBtn");
     const preflightStatusEl = document.getElementById("preflightStatus");
@@ -409,8 +456,20 @@ HTML_PAGE = """<!doctype html>
     const resultsBrowseStatusEl = document.getElementById("resultsBrowseStatus");
     const resultsBrowseOutputEl = document.getElementById("resultsBrowseOutput");
 
-    function setStatus(text) {
-      statusEl.textContent = text;
+    function setStatusMessage(el, text, kind = "info") {
+      el.textContent = text;
+      el.classList.remove("is-info", "is-success", "is-error");
+      if (kind === "success") {
+        el.classList.add("is-success");
+      } else if (kind === "error") {
+        el.classList.add("is-error");
+      } else {
+        el.classList.add("is-info");
+      }
+    }
+
+    function setStatus(text, kind = "info") {
+      setStatusMessage(statusEl, text, kind);
     }
 
     function fmtMs(v) {
@@ -419,9 +478,17 @@ HTML_PAGE = """<!doctype html>
 
     function setPreflightState(ok, sha) {
       runBtn.disabled = !ok;
-      preflightStatusEl.textContent = ok
-        ? "Preflight OK. Eval runs are enabled."
-        : "Preflight required. Eval runs are blocked.";
+      runAllBtn.disabled = !ok;
+      setStatusMessage(
+        preflightStatusEl,
+        ok
+          ? "Preflight passed. Single and batch runs are enabled."
+          : "Preflight required. Validate prompt set to enable run actions.",
+        ok ? "success" : "error"
+      );
+      runGateHintEl.textContent = ok
+        ? "Run actions enabled. You can execute single prompt or 3-mode comparison."
+        : "Preflight required to enable run actions.";
       preflightShaEl.textContent = "Dataset SHA256: " + (sha || "(not available)");
     }
 
@@ -469,7 +536,7 @@ HTML_PAGE = """<!doctype html>
 
     async function runPreflight() {
       preflightBtn.disabled = true;
-      preflightStatusEl.textContent = "Running preflight...";
+      setStatusMessage(preflightStatusEl, "Running preflight validation...", "info");
       try {
         const res = await fetch("/api/preflight", {
           method: "POST",
@@ -480,12 +547,20 @@ HTML_PAGE = """<!doctype html>
         preflightOutputEl.textContent = data.output || "";
         setPreflightState(Boolean(data.preflight_ok), data.dataset_sha256 || "");
         if (!res.ok) {
-          preflightStatusEl.textContent = "Preflight failed.";
+          setStatusMessage(
+            preflightStatusEl,
+            "Preflight failed. Fix prompt-set validation errors shown below and run validation again.",
+            "error"
+          );
           return;
         }
-        preflightStatusEl.textContent = "Preflight complete.";
+        setStatusMessage(preflightStatusEl, "Preflight passed. Run actions are enabled.", "success");
       } catch (err) {
-        preflightStatusEl.textContent = "Preflight error: " + err.message;
+        setStatusMessage(
+          preflightStatusEl,
+          "Preflight failed. Check prompt-set path and retry. Details: " + err.message,
+          "error"
+        );
       } finally {
         preflightBtn.disabled = false;
       }
@@ -494,11 +569,11 @@ HTML_PAGE = """<!doctype html>
     async function validateAndIngestRunFile() {
       const path = runFilePathEl.value.trim();
       if (!path) {
-        ingestStatusEl.textContent = "Run file path is required.";
+        setStatusMessage(ingestStatusEl, "Run file path is required.", "error");
         return;
       }
       ingestBtn.disabled = true;
-      ingestStatusEl.textContent = "Validating run file...";
+      setStatusMessage(ingestStatusEl, "Validating run file...", "info");
       try {
         const res = await fetch("/api/ingest-run", {
           method: "POST",
@@ -512,11 +587,21 @@ HTML_PAGE = """<!doctype html>
         });
         const data = await res.json();
         ingestOutputEl.textContent = data.output || "";
-        ingestStatusEl.textContent = data.ingested
-          ? "Ingested. Validation status=OK."
-          : "Blocked. Validation did not return status=OK.";
+        if (data.ingested) {
+          setStatusMessage(ingestStatusEl, "Ingestion complete. Validation status=OK.", "success");
+        } else {
+          setStatusMessage(
+            ingestStatusEl,
+            "Ingestion blocked: validator status is not OK. Resolve validator output and retry.",
+            "error"
+          );
+        }
       } catch (err) {
-        ingestStatusEl.textContent = "Ingestion error: " + err.message;
+        setStatusMessage(
+          ingestStatusEl,
+          "Ingestion failed. Check run file path and validation settings, then retry. Details: " + err.message,
+          "error"
+        );
       } finally {
         ingestBtn.disabled = false;
       }
@@ -524,7 +609,7 @@ HTML_PAGE = """<!doctype html>
 
     async function runEvalSet() {
       runEvalSetBtn.disabled = true;
-      evalSetStatusEl.textContent = "Running eval set...";
+      setStatusMessage(evalSetStatusEl, "Running batch eval...", "info");
       evalSetOutputEl.textContent = "";
       try {
         const res = await fetch("/api/run-eval-set", {
@@ -546,10 +631,14 @@ HTML_PAGE = """<!doctype html>
         if (!res.ok) {
           throw new Error(data.error || "Eval set run failed");
         }
-        evalSetStatusEl.textContent = "Eval set run complete.";
+        setStatusMessage(evalSetStatusEl, "Batch eval complete.", "success");
         runFilePathEl.value = data.out_path || runFilePathEl.value;
       } catch (err) {
-        evalSetStatusEl.textContent = "Eval set error: " + err.message;
+        setStatusMessage(
+          evalSetStatusEl,
+          "Batch eval failed. Check preflight state, model availability, and Ollama URL, then retry. Details: " + err.message,
+          "error"
+        );
       } finally {
         runEvalSetBtn.disabled = false;
       }
@@ -563,17 +652,25 @@ HTML_PAGE = """<!doctype html>
     async function loadPromptRows() {
       const path = browsePromptPathEl.value.trim() || "docs/evals/prompt_set.jsonl";
       loadPromptsBtn.disabled = true;
-      promptBrowseStatusEl.textContent = "Loading prompts...";
+      setStatusMessage(promptBrowseStatusEl, "Loading prompts...", "info");
       try {
         const res = await fetch("/api/prompts?path=" + encodeURIComponent(path) + "&offset=0&limit=20");
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error || "failed loading prompts");
         }
-        promptBrowseStatusEl.textContent = "Loaded " + data.rows.length + " of " + data.total + " prompt rows.";
+        setStatusMessage(
+          promptBrowseStatusEl,
+          "Loaded " + data.rows.length + " of " + data.total + " prompt rows.",
+          "success"
+        );
         promptBrowseOutputEl.textContent = toPrettyJsonLines(data.rows, 20);
       } catch (err) {
-        promptBrowseStatusEl.textContent = "Prompt load error: " + err.message;
+        setStatusMessage(
+          promptBrowseStatusEl,
+          "Prompt load failed. Check prompt-set path and JSONL format, then retry. Details: " + err.message,
+          "error"
+        );
       } finally {
         loadPromptsBtn.disabled = false;
       }
@@ -581,7 +678,7 @@ HTML_PAGE = """<!doctype html>
 
     async function refreshResultFiles() {
       refreshResultFilesBtn.disabled = true;
-      resultsBrowseStatusEl.textContent = "Refreshing result files...";
+      setStatusMessage(resultsBrowseStatusEl, "Refreshing result files...", "info");
       try {
         const res = await fetch("/api/results/files");
         const data = await res.json();
@@ -595,12 +692,16 @@ HTML_PAGE = """<!doctype html>
           opt.textContent = file.path + " (" + file.size_bytes + " bytes)";
           resultsFileSelectEl.appendChild(opt);
         }
-        resultsBrowseStatusEl.textContent = "Found " + data.files.length + " result files.";
+        setStatusMessage(resultsBrowseStatusEl, "Found " + data.files.length + " result files.", "success");
         if (data.files.length === 0) {
-          resultsBrowseOutputEl.textContent = "(no .jsonl files under docs/evals/results)";
+          resultsBrowseOutputEl.textContent = "No result files found in docs/evals/results. Run batch eval first or check output path.";
         }
       } catch (err) {
-        resultsBrowseStatusEl.textContent = "Result file list error: " + err.message;
+        setStatusMessage(
+          resultsBrowseStatusEl,
+          "Result file listing failed. Check docs/evals/results path and permissions. Details: " + err.message,
+          "error"
+        );
       } finally {
         refreshResultFilesBtn.disabled = false;
       }
@@ -609,21 +710,29 @@ HTML_PAGE = """<!doctype html>
     async function loadResultRows() {
       const path = (resultsFileSelectEl.value || "").trim();
       if (!path) {
-        resultsBrowseStatusEl.textContent = "Select a result file first.";
+        setStatusMessage(resultsBrowseStatusEl, "Select a result file first.", "error");
         return;
       }
       loadResultRowsBtn.disabled = true;
-      resultsBrowseStatusEl.textContent = "Loading result rows...";
+      setStatusMessage(resultsBrowseStatusEl, "Loading result rows...", "info");
       try {
         const res = await fetch("/api/results/rows?path=" + encodeURIComponent(path) + "&offset=0&limit=20");
         const data = await res.json();
         if (!res.ok) {
           throw new Error(data.error || "failed loading result rows");
         }
-        resultsBrowseStatusEl.textContent = "Loaded " + data.rows.length + " of " + data.total + " rows from " + data.path;
+        setStatusMessage(
+          resultsBrowseStatusEl,
+          "Loaded " + data.rows.length + " of " + data.total + " rows from " + data.path,
+          "success"
+        );
         resultsBrowseOutputEl.textContent = toPrettyJsonLines(data.rows, 20);
       } catch (err) {
-        resultsBrowseStatusEl.textContent = "Result rows error: " + err.message;
+        setStatusMessage(
+          resultsBrowseStatusEl,
+          "Result row load failed. Verify selected file path and JSONL validity. Details: " + err.message,
+          "error"
+        );
       } finally {
         loadResultRowsBtn.disabled = false;
       }
@@ -661,13 +770,12 @@ HTML_PAGE = """<!doctype html>
     async function runAllModes() {
       const prompt = promptEl.value.trim();
       if (!prompt) {
-        setStatus("No typed prompt found. Running eval-set flow instead...");
-        await runEvalSet();
+        setStatus("Prompt required for mode comparison. Use Run Batch Eval for prompt-set runs.", "error");
         return;
       }
       runAllBtn.disabled = true;
       runBtn.disabled = true;
-      setStatus("Running all three modes...");
+      setStatus("Running 3-mode comparison...", "info");
       answerEl.textContent = "";
       planEl.textContent = "";
       routeEl.textContent = "";
@@ -693,9 +801,12 @@ HTML_PAGE = """<!doctype html>
         if (data.results && data.results.lite) {
           renderMetrics(data.results.lite);
         }
-        setStatus("Complete (direct + lite + two_pass).");
+        setStatus("3-mode comparison complete.", "success");
       } catch (err) {
-        setStatus("Error: " + err.message);
+        setStatus(
+          "Run failed. Check Ollama URL, selected model, and preflight state, then retry. Details: " + err.message,
+          "error"
+        );
       } finally {
         runAllBtn.disabled = false;
         runBtn.disabled = false;
@@ -705,12 +816,12 @@ HTML_PAGE = """<!doctype html>
     async function runPrompt() {
       const prompt = promptEl.value.trim();
       if (!prompt) {
-        setStatus("Prompt is required.");
+        setStatus("Enter a prompt to run a single request.", "error");
         return;
       }
       runBtn.disabled = true;
       runAllBtn.disabled = true;
-      setStatus("Running...");
+      setStatus("Running request...", "info");
       answerEl.textContent = "";
       planEl.textContent = "";
       routeEl.textContent = "";
@@ -747,9 +858,12 @@ HTML_PAGE = """<!doctype html>
             ].join(" ")
           : "Route info hidden";
         renderMetrics(data);
-        setStatus("Complete.");
+        setStatus("Run complete.", "success");
       } catch (err) {
-        setStatus("Error: " + err.message);
+        setStatus(
+          "Run failed. Check Ollama URL, selected model, and server status, then retry. Details: " + err.message,
+          "error"
+        );
       } finally {
         runBtn.disabled = false;
         runAllBtn.disabled = false;
@@ -757,12 +871,12 @@ HTML_PAGE = """<!doctype html>
     }
 
     function clearResults() {
-      answerEl.textContent = "";
-      planEl.textContent = "";
-      routeEl.textContent = "";
-      allModesEl.textContent = "";
+      answerEl.textContent = "No run yet. Run a prompt to view answer, plan, route, and latency metrics.";
+      planEl.textContent = "Plan hidden. Enable \"show plan\" to display planner output.";
+      routeEl.textContent = "Route details hidden. Enable \"show route info\" to inspect routing decisions.";
+      allModesEl.textContent = "(no comparison output yet)";
       metricsEl.innerHTML = "";
-      setStatus("");
+      setStatus("Output cleared.", "info");
     }
 
     runBtn.addEventListener("click", runPrompt);
@@ -774,10 +888,18 @@ HTML_PAGE = """<!doctype html>
     loadPromptsBtn.addEventListener("click", loadPromptRows);
     refreshResultFilesBtn.addEventListener("click", refreshResultFiles);
     loadResultRowsBtn.addEventListener("click", loadResultRows);
-    loadModels().catch((err) => setStatus("Failed loading models: " + err.message));
-    refreshGateState().catch((err) => preflightStatusEl.textContent = "State load failed: " + err.message);
-    refreshResultFiles().catch((err) => resultsBrowseStatusEl.textContent = "Result file list error: " + err.message);
-    loadPromptRows().catch((err) => promptBrowseStatusEl.textContent = "Prompt load error: " + err.message);
+    loadModels().catch((err) =>
+      setStatus("Failed loading models. Check local server state and refresh. Details: " + err.message, "error")
+    );
+    refreshGateState().catch((err) =>
+      setStatusMessage(preflightStatusEl, "State load failed. Refresh and retry. Details: " + err.message, "error")
+    );
+    refreshResultFiles().catch((err) =>
+      setStatusMessage(resultsBrowseStatusEl, "Result file refresh failed. Details: " + err.message, "error")
+    );
+    loadPromptRows().catch((err) =>
+      setStatusMessage(promptBrowseStatusEl, "Prompt preview failed. Details: " + err.message, "error")
+    );
   </script>
 </body>
 </html>
