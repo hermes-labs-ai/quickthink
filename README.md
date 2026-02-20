@@ -309,6 +309,7 @@ python3 scripts/release/create_release_notes.py --version <x.y.z>
 Follow:
 - `docs/release/RELEASE_CHECKLIST.md`
 - `docs/release/RELEASE_PROCESS.md`
+- `docs/release/SUPPLY_CHAIN_BASELINE_2026.md`
 
 ## Caveats
 

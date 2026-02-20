@@ -54,14 +54,24 @@ Status labels:
 - [x] `PASS` Manual release-check workflow exists (`.github/workflows/release-check.yml`).
 - [ ] `PARTIAL` No automated version/tag enforcement yet (manual process).
 
-## F) Evaluation and claims discipline
+## F) Supply-chain and provenance (2026 baseline)
+
+- [ ] `PARTIAL` No provenance attestation artifact published per release yet.
+- [ ] `PARTIAL` No SBOM artifact (SPDX/CycloneDX) attached to releases yet.
+- [ ] `PARTIAL` No dependency-review PR gate workflow yet.
+- [ ] `PARTIAL` No OpenSSF Scorecard monitoring workflow/reporting yet.
+- [ ] `PARTIAL` Workflow permission hardening and action pinning policy not fully documented/enforced.
+- [x] `PASS` Hash-anchored release freeze/tag process documented and executed.
+- [x] `PASS` Baseline standards map exists (`docs/release/SUPPLY_CHAIN_BASELINE_2026.md`).
+
+## G) Evaluation and claims discipline
 
 - [x] `PASS` Canonical eval datasets and rubric docs are present.
 - [x] `PASS` Compatibility snapshot includes caveat/context requirements.
 - [x] `PASS` Deployment gate criteria documented (`docs/evals/deployment_gate_2026.md`).
 - [ ] `PARTIAL` Latency claims still require token-normalized benchmark runs for strict comparability.
 
-## G) UX and product polish
+## H) UX and product polish
 
 - [x] `PASS` CLI command surface is coherent (`ask`, `bench`, `ui`).
 - [ ] `PARTIAL` UI polish is functional but not production-grade.
@@ -75,6 +85,8 @@ Status labels:
    - static HTML template
    - client script
 3. Add machine/runtime metadata capture into benchmark report output by default.
+4. Implement provenance attestations + SBOM release assets.
+5. Add dependency-review + scorecard workflows.
 
 ## Gate decision
 

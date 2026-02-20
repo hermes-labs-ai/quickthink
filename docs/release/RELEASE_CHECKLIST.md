@@ -60,3 +60,15 @@ python -m pip install --upgrade build twine
 python -m build
 python -m twine check dist/*
 ```
+
+## 6) 2026 supply-chain baseline (recommended)
+For public OSS releases, complete these before marking a release final:
+
+1. Generate and publish build provenance attestation for release assets (or record why not yet enabled).
+2. Generate and publish an SBOM (SPDX or CycloneDX) for the release assets.
+3. Verify attestation in CI or locally (`gh attestation verify ...`) and retain proof in release notes.
+4. Use immutable releases when available (publish as draft first, attach assets, then publish).
+5. Ensure workflow token permissions are least-privilege and review third-party action pinning policy.
+
+Reference baseline and rationale:
+- `docs/release/SUPPLY_CHAIN_BASELINE_2026.md`

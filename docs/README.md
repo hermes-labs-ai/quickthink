@@ -16,6 +16,7 @@ This folder contains user, maintainer, evaluation, and release documentation for
 ## Release docs
 - `docs/release/RELEASE_CHECKLIST.md`
 - `docs/release/RELEASE_PROCESS.md`
+- `docs/release/SUPPLY_CHAIN_BASELINE_2026.md`
 
 ## Version notes
 - `docs/VERSION_NOTES.md`

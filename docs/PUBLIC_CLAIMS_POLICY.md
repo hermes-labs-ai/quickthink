@@ -23,6 +23,8 @@ Include:
 - Judge backend.
 - Token caps and generation settings.
 - Date and git SHA (if available).
+- Link or checksum for released artifacts when referenced publicly.
+- Note whether results are from direct, lite, or two_pass mode.
 
 ## Claim template
 "In our local benchmark on `<date>` (git `<sha>`), using model `<model>`, prompt set `<prompt_set>`, `<runs>` runs, judge backend `<backend>`, and generation settings `<settings>` on `<hardware/runtime>`, we observed `<result>`. This claim is scoped to those conditions."
