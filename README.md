@@ -74,6 +74,8 @@ If this command works, your local setup is ready.
 - Docs index: `docs/README.md`
 - First-time setup: `docs/GETTING_STARTED.md`
 - Common failures and fixes: `docs/TROUBLESHOOTING.md`
+- Known limitations: `docs/KNOWN_LIMITATIONS.md`
+- Quick demo script: `docs/demo/QUICK_DEMO.md`
 
 ## Repository Layout
 
@@ -178,6 +180,8 @@ It does:
 - Result validation
 - Markdown/HTML report generation
 - Compatibility snapshot update
+
+For a one-minute terminal walkthrough command set, see `docs/demo/QUICK_DEMO.md`.
 
 Optional environment flags:
 - `QUICKTHINK_PRESET=fast|balanced|strict`
@@ -304,7 +308,7 @@ python -m compileall src tests scripts
 
 Release docs + checklist:
 ```bash
-python3 scripts/release/create_release_notes.py --version <x.y.z>
+make release-check VERSION=x.y.z
 ```
 Follow:
 - `docs/release/RELEASE_CHECKLIST.md`

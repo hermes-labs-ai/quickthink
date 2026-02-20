@@ -52,6 +52,12 @@ git push origin v<x.y.z>
 
 Create a GitHub Release for tag `v<x.y.z>` and paste finalized release notes.
 
+Recommended release publication order:
+1. Create release as **draft**.
+2. Attach release assets (notes, hashes, SBOM/attestation artifacts when available).
+3. Final review.
+4. Publish release (treat as immutable after publish).
+
 ## Optional packaging validation
 Before publishing to package indexes, run:
 

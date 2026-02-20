@@ -8,6 +8,10 @@ This folder contains user, maintainer, evaluation, and release documentation for
 ## Troubleshooting
 - `docs/TROUBLESHOOTING.md`
 
+## Limits and demo
+- `docs/KNOWN_LIMITATIONS.md`
+- `docs/demo/QUICK_DEMO.md`
+
 ## Eval docs
 - `docs/evals/README.md`
 - `docs/evals/harness_spec.md`
