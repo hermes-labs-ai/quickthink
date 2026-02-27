@@ -56,11 +56,12 @@ Status labels:
 
 ## F) Supply-chain and provenance (2026 baseline)
 
-- [ ] `PARTIAL` No provenance attestation artifact published per release yet.
-- [ ] `PARTIAL` No SBOM artifact (SPDX/CycloneDX) attached to releases yet.
-- [ ] `PARTIAL` No dependency-review PR gate workflow yet.
-- [ ] `PARTIAL` No OpenSSF Scorecard monitoring workflow/reporting yet.
-- [ ] `PARTIAL` Workflow permission hardening and action pinning policy not fully documented/enforced.
+- [x] `PASS` Provenance attestation workflow is configured (`.github/workflows/release-supply-chain.yml`).
+- [x] `PASS` SBOM generation workflow is configured (`.github/workflows/release-supply-chain.yml`).
+- [x] `PASS` Dependency-review PR gate workflow exists (`.github/workflows/dependency-review.yml`).
+- [x] `PASS` OpenSSF Scorecard workflow exists (`.github/workflows/scorecard.yml`).
+- [x] `PASS` Actions are SHA pinned in workflows.
+- [ ] `PARTIAL` First public release should verify SBOM + provenance artifacts are attached as expected.
 - [x] `PASS` Hash-anchored release freeze/tag process documented and executed.
 - [x] `PASS` Baseline standards map exists (`docs/release/SUPPLY_CHAIN_BASELINE_2026.md`).
 
@@ -85,8 +86,8 @@ Status labels:
    - static HTML template
    - client script
 3. Add machine/runtime metadata capture into benchmark report output by default.
-4. Implement provenance attestations + SBOM release assets.
-5. Add dependency-review + scorecard workflows.
+4. Execute one dry-run release to confirm SBOM + provenance artifacts are produced and discoverable.
+5. Add repository badges for CI and security workflows after the default branch is finalized.
 
 ## Gate decision
 

@@ -1,0 +1,100 @@
+{
+  "models": {
+    "qwen2.5:1.5b": {
+      "modes": {
+        "direct": {
+          "avg_score": 5.572222222222222,
+          "avg_latency_ms": 4789.771962261117,
+          "rows": 180,
+          "score_delta_vs_direct": 0.0,
+          "latency_delta_vs_direct_ms": 0.0
+        },
+        "v02_language_game_moves": {
+          "avg_score": 5.711111111111111,
+          "avg_latency_ms": 3826.957614833331,
+          "rows": 180,
+          "score_delta_vs_direct": 0.13888888888888928,
+          "latency_delta_vs_direct_ms": -962.8143474277858
+        },
+        "v03_horizon_fusion_guard": {
+          "avg_score": 5.761111111111111,
+          "avg_latency_ms": 3592.188225255567,
+          "rows": 180,
+          "score_delta_vs_direct": 0.1888888888888891,
+          "latency_delta_vs_direct_ms": -1197.5837370055497
+        }
+      }
+    },
+    "mistral:7b": {
+      "modes": {
+        "direct": {
+          "avg_score": 5.461111111111111,
+          "avg_latency_ms": 8641.563905355553,
+          "rows": 180,
+          "score_delta_vs_direct": 0.0,
+          "latency_delta_vs_direct_ms": 0.0
+        },
+        "v02_language_game_moves": {
+          "avg_score": 6.033333333333333,
+          "avg_latency_ms": 9281.652103694443,
+          "rows": 180,
+          "score_delta_vs_direct": 0.572222222222222,
+          "latency_delta_vs_direct_ms": 640.0881983388899
+        },
+        "v03_horizon_fusion_guard": {
+          "avg_score": 6.0777777777777775,
+          "avg_latency_ms": 8495.967183761124,
+          "rows": 180,
+          "score_delta_vs_direct": 0.6166666666666663,
+          "latency_delta_vs_direct_ms": -145.59672159442925
+        }
+      }
+    }
+  },
+  "pairwise_vs_direct": {
+    "qwen2.5:1.5b:v02_language_game_moves": {
+      "wins": 39,
+      "losses": 28,
+      "ties": 113,
+      "non_tie_win_rate": 0.582089552238806,
+      "pvalue_two_sided_sign_test": 0.2215487296448111
+    },
+    "qwen2.5:1.5b:v03_horizon_fusion_guard": {
+      "wins": 38,
+      "losses": 26,
+      "ties": 116,
+      "non_tie_win_rate": 0.59375,
+      "pvalue_two_sided_sign_test": 0.16864291143970336
+    },
+    "mistral:7b:v02_language_game_moves": {
+      "wins": 88,
+      "losses": 19,
+      "ties": 73,
+      "non_tie_win_rate": 0.822429906542056,
+      "pvalue_two_sided_sign_test": 8.481335709263932e-12
+    },
+    "mistral:7b:v03_horizon_fusion_guard": {
+      "wins": 90,
+      "losses": 17,
+      "ties": 73,
+      "non_tie_win_rate": 0.8411214953271028,
+      "pvalue_two_sided_sign_test": 3.5057799981190225e-13
+    }
+  },
+  "warnings": [
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v02_language_game_moves",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.3333333333333339
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v03_horizon_fusion_guard",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.2666666666666666
+    }
+  ]
+}

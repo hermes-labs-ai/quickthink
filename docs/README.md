@@ -22,6 +22,11 @@ This folder contains user, maintainer, evaluation, and release documentation for
 - `docs/release/RELEASE_PROCESS.md`
 - `docs/release/SUPPLY_CHAIN_BASELINE_2026.md`
 
+## Research and strategy
+- `docs/research/QUICKTHINK_OWNER_NOTEBOOK_AND_GTM_2026-02-26.md`
+- `docs/research/QUICKTHINK_DELOITTE_STYLE_STRATEGY_BOOK_2026-02-26.md`
+- `docs/research/QUICKTHINK_PRODUCT_INITIATIVE_EXECUTIVE_REPORT_2026-02-26.md`
+
 ## Version notes
 - `docs/VERSION_NOTES.md`
 

@@ -21,22 +21,22 @@ This document defines a conservative, public-open-source release baseline for `q
 5. Least-privilege GitHub Actions permissions and reviewed third-party actions policy.
 6. Signed/tagged immutable release practice with reproducible release notes and hashes.
 
-## Current repo status (2026-02-20)
+## Current repo status (2026-02-25)
 
 - `PASS`: hash-anchored release freeze/tag process exists and has been executed.
-- `PARTIAL`: CI and release workflows exist, but no published provenance attestation workflow yet.
-- `PARTIAL`: no first-class SBOM release artifact pipeline yet.
-- `PARTIAL`: no dedicated dependency-review workflow yet.
-- `PARTIAL`: no Scorecard workflow/reporting yet.
-- `PARTIAL`: workflow action pinning policy is not fully enforced.
+- `PASS`: provenance attestation workflow configured (`.github/workflows/release-supply-chain.yml`).
+- `PASS`: SBOM generation workflow configured (`.github/workflows/release-supply-chain.yml`).
+- `PASS`: dependency-review workflow configured (`.github/workflows/dependency-review.yml`).
+- `PASS`: Scorecard workflow configured (`.github/workflows/scorecard.yml`).
+- `PASS`: workflow actions are SHA pinned.
+- `PARTIAL`: first public release still needs one executed dry-run confirming SBOM/provenance artifacts are attached and retrievable.
 
 ## Conservative next actions
 
-1. Add SBOM generation + upload in release workflow.
-2. Add dependency-review workflow for pull requests.
-3. Add provenance attestation generation + verification for release artifacts.
-4. Add OpenSSF Scorecard workflow and track score trends.
-5. Apply least-privilege `permissions:` to all workflows and document pinning rules.
+1. Execute one release dry-run and verify SBOM/provenance artifact discoverability.
+2. Capture verification evidence in `docs/release/RELEASE_NOTES_DRAFT.md` (or release notes body).
+3. Keep least-privilege workflow `permissions:` under periodic review.
+4. Track scorecard trend over at least 2 weekly runs before public claims.
 
 ## Notes on claims
 

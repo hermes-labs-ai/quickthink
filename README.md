@@ -52,7 +52,7 @@ Prerequisite: install and start [Ollama](https://ollama.com/) locally.
 
 ```bash
 # 1) Clone and enter repo
-git clone <your-fork-or-this-repo-url> quickthink
+git clone https://github.com/roli-lpci/quickthink.git quickthink  # or your fork URL
 cd quickthink
 
 # 2) Create env and install
@@ -76,6 +76,12 @@ If this command works, your local setup is ready.
 - Common failures and fixes: `docs/TROUBLESHOOTING.md`
 - Known limitations: `docs/KNOWN_LIMITATIONS.md`
 - Quick demo script: `docs/demo/QUICK_DEMO.md`
+- OSS readiness scorecard: `docs/release/OSS_READINESS_SCORECARD_2026-02-25.md`
+- OSS standards alignment (with external references): `docs/release/OSS_STANDARDS_ALIGNMENT_2026.md`
+- Agent operating notes: `AGENTS.md`
+- Owner notebook + GTM plan: `docs/research/QUICKTHINK_OWNER_NOTEBOOK_AND_GTM_2026-02-26.md`
+- Strategy book (market/GTM positioning): `docs/research/QUICKTHINK_DELOITTE_STYLE_STRATEGY_BOOK_2026-02-26.md`
+- Executive report: `docs/research/QUICKTHINK_PRODUCT_INITIATIVE_EXECUTIVE_REPORT_2026-02-26.md`
 
 ## Repository Layout
 
@@ -151,6 +157,18 @@ Optional continuity hint (tiny, off by default):
 
 ```bash
 quickthink ask "Continue the previous structure" --continuity-hint "ctx:prior_goal,format_json"
+```
+
+Strict-format-safe lane policy (routes strict format tasks to direct path first):
+
+```bash
+quickthink ask "json only: {\"ok\":true,\"why\":\"short\"}" --lane-policy strict_safe --show-route
+```
+
+Benchmark with strict-safe lane policy:
+
+```bash
+quickthink bench "Answer with YES or NO only: Is 2+2=4?" --lane-policy strict_safe --runs 3
 ```
 
 Log plan + metrics as JSONL metadata:
@@ -246,6 +264,9 @@ quickthink ui
 ```
 
 Then open `http://127.0.0.1:7860` if it does not open automatically.
+
+UI lane control:
+- `Lane policy` dropdown supports `default` and `strict_safe` for single-prompt runs and 3-mode comparisons.
 
 UI eval safety gates:
 - Preflight is required before any eval run (`validate_prompt_set.py` must return `status=OK`).

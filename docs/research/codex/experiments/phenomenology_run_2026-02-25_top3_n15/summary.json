@@ -1,0 +1,68 @@
+{
+  "models": {
+    "qwen2.5:1.5b": {
+      "modes": {
+        "direct": {
+          "avg_score": 5.544444444444444,
+          "avg_latency_ms": 2199.6787356388904,
+          "rows": 180,
+          "score_delta_vs_direct": 0.0,
+          "latency_delta_vs_direct_ms": 0.0
+        },
+        "v02_language_game_moves": {
+          "avg_score": 5.838888888888889,
+          "avg_latency_ms": 1617.449937261107,
+          "rows": 180,
+          "score_delta_vs_direct": 0.2944444444444443,
+          "latency_delta_vs_direct_ms": -582.2287983777835
+        },
+        "v03_horizon_fusion_guard": {
+          "avg_score": 5.777777777777778,
+          "avg_latency_ms": 1480.611882627781,
+          "rows": 180,
+          "score_delta_vs_direct": 0.2333333333333334,
+          "latency_delta_vs_direct_ms": -719.0668530111095
+        },
+        "v04_negative_capability": {
+          "avg_score": 5.7,
+          "avg_latency_ms": 1716.8400184722216,
+          "rows": 180,
+          "score_delta_vs_direct": 0.1555555555555559,
+          "latency_delta_vs_direct_ms": -482.83871716666886
+        }
+      }
+    }
+  },
+  "pairwise_vs_direct": {
+    "qwen2.5:1.5b:v02_language_game_moves": {
+      "wins": 45,
+      "losses": 21,
+      "ties": 114,
+      "non_tie_win_rate": 0.6818181818181818,
+      "pvalue_two_sided_sign_test": 0.004272405031651673
+    },
+    "qwen2.5:1.5b:v03_horizon_fusion_guard": {
+      "wins": 39,
+      "losses": 22,
+      "ties": 119,
+      "non_tie_win_rate": 0.639344262295082,
+      "pvalue_two_sided_sign_test": 0.03961701489849968
+    },
+    "qwen2.5:1.5b:v04_negative_capability": {
+      "wins": 44,
+      "losses": 29,
+      "ties": 107,
+      "non_tie_win_rate": 0.6027397260273972,
+      "pvalue_two_sided_sign_test": 0.1006436775202357
+    }
+  },
+  "warnings": [
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v04_negative_capability",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.4666666666666668
+    }
+  ]
+}

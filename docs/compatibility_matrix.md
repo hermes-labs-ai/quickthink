@@ -2,6 +2,10 @@
 
 Generated: 2026-02-18T18:50:26+00:00
 
+Interpretation status: historical snapshot only.
+Do not use this table as a standalone headline performance claim.
+Use canonical harness reports with full environment metadata and token-limit controls for publication-grade comparisons.
+
 Supported models: `qwen2.5:1.5b`, `mistral:7b`, `gemma3:27b`.
 
 | Model | Preset | Direct p50 | Lite p50 | Lite p95 | Lite overhead p50 | Two-pass p50 | Status |

@@ -13,3 +13,5 @@ docs/evals/results/
 scripts/ops/agent_comms.py
 AGENT.md
 .DS_Store
+output/
+tmp/
