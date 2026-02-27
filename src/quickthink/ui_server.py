@@ -271,6 +271,13 @@ HTML_PAGE = """<!doctype html>
             <option value="two_pass">two_pass</option>
           </select>
         </div>
+        <div>
+          <label for="lanePolicy">Lane policy</label>
+          <select id="lanePolicy">
+            <option value="default">default</option>
+            <option value="strict_safe">strict_safe</option>
+          </select>
+        </div>
         <div class="full">
           <label for="ollamaUrl">Ollama URL</label>
           <input id="ollamaUrl" value="http://localhost:11434" />
@@ -413,6 +420,7 @@ HTML_PAGE = """<!doctype html>
   <script>
     const modelEl = document.getElementById("model");
     const modeEl = document.getElementById("mode");
+    const lanePolicyEl = document.getElementById("lanePolicy");
     const promptEl = document.getElementById("prompt");
     const ollamaEl = document.getElementById("ollamaUrl");
     const continuityEl = document.getElementById("continuity");
@@ -802,6 +810,7 @@ HTML_PAGE = """<!doctype html>
             prompt,
             model: modelEl.value,
             ollama_url: ollamaEl.value.trim(),
+            lane_policy: lanePolicyEl.value,
             bypass_short_prompts: bypassEl.checked,
             continuity_hint: continuityEl.value.trim() || null
           })
@@ -850,6 +859,7 @@ HTML_PAGE = """<!doctype html>
             model: modelEl.value,
             mode: modeEl.value,
             ollama_url: ollamaEl.value.trim(),
+            lane_policy: lanePolicyEl.value,
             bypass_short_prompts: bypassEl.checked,
             continuity_hint: continuityEl.value.trim() || null
           })
@@ -1059,11 +1069,13 @@ def _run_eval_mode(
     model: str,
     mode: str,
     ollama_url: str,
+    lane_policy: str,
     bypass_short_prompts: bool,
     continuity_hint: object,
 ) -> dict[str, object]:
     config = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
     config.continuity_hint = str(continuity_hint).strip() if continuity_hint else None
+    config.lane_policy = lane_policy
 
     if mode == "direct":
         config.mode = "direct"
@@ -1383,6 +1395,7 @@ def serve_ui(host: str = "127.0.0.1", port: int = 7860, open_browser: bool = Fal
                 model = str(payload.get("model", "qwen2.5:1.5b")).strip()
                 mode = str(payload.get("mode", "lite")).strip()
                 ollama_url = str(payload.get("ollama_url", "http://localhost:11434")).strip()
+                lane_policy = str(payload.get("lane_policy", "default")).strip()
                 bypass_short_prompts = bool(payload.get("bypass_short_prompts", True))
                 continuity_hint = payload.get("continuity_hint", None)
 
@@ -1392,6 +1405,9 @@ def serve_ui(host: str = "127.0.0.1", port: int = 7860, open_browser: bool = Fal
                 if mode not in {"direct", "lite", "two_pass"}:
                     self._json(400, {"error": "mode must be direct, lite, or two_pass"})
                     return
+                if lane_policy not in {"default", "strict_safe"}:
+                    self._json(400, {"error": "lane_policy must be default or strict_safe"})
+                    return
                 if self.path == "/api/ask-all":
                     results = {
                         "direct": _run_eval_mode(
@@ -1399,6 +1415,7 @@ def serve_ui(host: str = "127.0.0.1", port: int = 7860, open_browser: bool = Fal
                             model=model,
                             mode="direct",
                             ollama_url=ollama_url,
+                            lane_policy=lane_policy,
                             bypass_short_prompts=bypass_short_prompts,
                             continuity_hint=continuity_hint,
                         ),
@@ -1407,6 +1424,7 @@ def serve_ui(host: str = "127.0.0.1", port: int = 7860, open_browser: bool = Fal
                             model=model,
                             mode="lite",
                             ollama_url=ollama_url,
+                            lane_policy=lane_policy,
                             bypass_short_prompts=bypass_short_prompts,
                             continuity_hint=continuity_hint,
                         ),
@@ -1415,6 +1433,7 @@ def serve_ui(host: str = "127.0.0.1", port: int = 7860, open_browser: bool = Fal
                             model=model,
                             mode="two_pass",
                             ollama_url=ollama_url,
+                            lane_policy=lane_policy,
                             bypass_short_prompts=bypass_short_prompts,
                             continuity_hint=continuity_hint,
                         ),
@@ -1427,6 +1446,7 @@ def serve_ui(host: str = "127.0.0.1", port: int = 7860, open_browser: bool = Fal
                     model=model,
                     mode=mode,
                     ollama_url=ollama_url,
+                    lane_policy=lane_policy,
                     bypass_short_prompts=bypass_short_prompts,
                     continuity_hint=continuity_hint,
                 )

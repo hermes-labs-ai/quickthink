@@ -44,16 +44,20 @@ def ask(
     log_file: Optional[Path] = typer.Option(None, help="Optional JSONL log file"),
     bypass_short_prompts: bool = typer.Option(True, help="Skip plan stage for short prompts"),
     continuity_hint: Optional[str] = typer.Option(None, help="Optional tiny continuity hint"),
+    lane_policy: str = typer.Option("default", help="Lane policy: default or strict_safe"),
 ) -> None:
     if mode not in {"lite", "two_pass"}:
         raise typer.BadParameter("mode must be 'lite' or 'two_pass'")
     if preset not in PRESET_PROFILES:
         raise typer.BadParameter("preset must be one of: fast, balanced, strict")
+    if lane_policy not in {"default", "strict_safe"}:
+        raise typer.BadParameter("lane-policy must be 'default' or 'strict_safe'")
     config = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
     config.apply_preset(preset)
     config.bypass_short_prompts = bypass_short_prompts
     config.mode = mode
     config.continuity_hint = continuity_hint
+    config.lane_policy = lane_policy
     engine = QuickThinkEngine(config)
 
     result = engine.run(prompt)
@@ -100,9 +104,12 @@ def bench(
     ollama_url: str = typer.Option("http://localhost:11434", help="Ollama base URL"),
     runs: int = typer.Option(3, min=1, max=20, help="Number of runs per mode"),
     preset: str = typer.Option("balanced", help="Preset profile: fast, balanced, strict"),
+    lane_policy: str = typer.Option("default", help="Lane policy: default or strict_safe"),
 ) -> None:
     if preset not in PRESET_PROFILES:
         raise typer.BadParameter("preset must be one of: fast, balanced, strict")
+    if lane_policy not in {"default", "strict_safe"}:
+        raise typer.BadParameter("lane-policy must be 'default' or 'strict_safe'")
     lite_latencies: list[float] = []
     two_pass_latencies: list[float] = []
     direct_latencies: list[float] = []
@@ -110,6 +117,7 @@ def bench(
     config_lite = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
     config_lite.apply_preset(preset)
     config_lite.mode = "lite"
+    config_lite.lane_policy = lane_policy
     engine_lite = QuickThinkEngine(config_lite)
     for _ in range(runs):
         lite_latencies.append(engine_lite.run(prompt).total_latency_ms)
@@ -117,6 +125,7 @@ def bench(
     config_two_pass = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
     config_two_pass.apply_preset(preset)
     config_two_pass.mode = "two_pass"
+    config_two_pass.lane_policy = lane_policy
     engine_two_pass = QuickThinkEngine(config_two_pass)
     for _ in range(runs):
         two_pass_latencies.append(engine_two_pass.run(prompt).total_latency_ms)
@@ -124,6 +133,7 @@ def bench(
     config_direct = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
     config_direct.apply_preset(preset)
     config_direct.mode = "lite"
+    config_direct.lane_policy = lane_policy
     config_direct.bypass_short_prompts = True
     config_direct.adaptive_routing = False
     config_direct.bypass_char_threshold = 100_000

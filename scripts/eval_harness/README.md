@@ -56,3 +56,18 @@ Isolated A/B/C tooling that avoids core runtime/CLI edits.
   --top-k-variants 2 \
   --out-dir docs/evals/results/variant_gate_edge
 ```
+
+## Variant Gate Resume / Checkpoint
+
+`run_variant_gate.py` now writes `run_results.jsonl` incrementally and maintains `checkpoint.json` in `--out-dir`.
+If a run is interrupted, resume without losing completed rows:
+
+```bash
+./.venv/bin/python scripts/eval_harness/run_variant_gate.py \
+  --prompt-set docs/evals/prompt_set_edge_cases.jsonl \
+  --variants-file <variants.json> \
+  --out-dir docs/evals/results/variant_gate_edge \
+  --models qwen2.5:1.5b \
+  --runs 15 \
+  --resume
+```

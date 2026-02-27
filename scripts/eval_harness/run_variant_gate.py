@@ -41,6 +41,16 @@ def load_prompt_set(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
+def load_jsonl_rows(path: Path) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    with path.open("r", encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if line:
+                rows.append(json.loads(line))
+    return rows
+
+
 def load_variants(path: Path, top_k: int) -> list[Variant]:
     rows = json.loads(path.read_text(encoding="utf-8"))
     out = [Variant(name=str(r["name"]), rules=str(r["rules"])) for r in rows]
@@ -62,6 +72,56 @@ def write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     with path.open("w", encoding="utf-8") as fh:
         for row in rows:
             fh.write(json.dumps(row, ensure_ascii=True) + "\n")
+
+
+def append_jsonl_row(fh: Any, row: dict[str, Any]) -> None:
+    fh.write(json.dumps(row, ensure_ascii=True) + "\n")
+
+
+def row_key(row: dict[str, Any]) -> tuple[str, str, str, int]:
+    return (
+        str(row.get("model", "")),
+        str(row.get("mode", "")),
+        str(row.get("prompt_id", "")),
+        int(row.get("run_index", 0)),
+    )
+
+
+def load_existing_row_keys(path: Path) -> set[tuple[str, str, str, int]]:
+    keys: set[tuple[str, str, str, int]] = set()
+    if not path.exists():
+        return keys
+    with path.open("r", encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            keys.add(row_key(row))
+    return keys
+
+
+def load_existing_direct_rows(path: Path) -> dict[tuple[str, str, int], dict[str, Any]]:
+    out: dict[tuple[str, str, int], dict[str, Any]] = {}
+    if not path.exists():
+        return out
+    with path.open("r", encoding="utf-8") as fh:
+        for line in fh:
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                row = json.loads(line)
+            except json.JSONDecodeError:
+                continue
+            if str(row.get("mode", "")) != "direct":
+                continue
+            key = (str(row.get("model", "")), str(row.get("prompt_id", "")), int(row.get("run_index", 0)))
+            out[key] = row
+    return out
 
 
 def binom_two_sided_pvalue(wins: int, losses: int) -> float:
@@ -196,13 +256,29 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--models", nargs="*", default=["qwen2.5:1.5b", "llama3.2:latest"])
     p.add_argument("--runs", type=int, default=2)
     p.add_argument("--ollama-url", default="http://localhost:11434")
+    p.add_argument("--request-timeout-s", type=float, default=120.0)
+    p.add_argument(
+        "--strict-direct-groups",
+        nargs="*",
+        default=[],
+        help="Optional prompt groups that should use direct output even for variant modes (task-class lane fallback).",
+    )
     p.add_argument("--preset", default="balanced", choices=["fast", "balanced", "strict"])
     p.add_argument("--mode", default="lite", choices=["lite", "two_pass"], help="QuickThink mode used for candidate variants")
+    p.add_argument(
+        "--resume",
+        action="store_true",
+        help=(
+            "Resume from existing run_results.jsonl in --out-dir. Existing rows are preserved, "
+            "missing rows are appended incrementally."
+        ),
+    )
     return p.parse_args()
 
 
 def main() -> int:
     args = parse_args()
+    strict_direct_groups = {str(g).strip() for g in args.strict_direct_groups if str(g).strip()}
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
@@ -227,6 +303,7 @@ def main() -> int:
         cfg_direct = QuickThinkConfig.with_model_profile(model=model, ollama_url=args.ollama_url)
         cfg_direct.apply_preset(args.preset)
         cfg_direct.mode = "lite"
+        cfg_direct.request_timeout_s = float(args.request_timeout_s)
         cfg_direct.bypass_short_prompts = True
         cfg_direct.adaptive_routing = False
         cfg_direct.bypass_char_threshold = 100_000
@@ -238,40 +315,117 @@ def main() -> int:
             cfg_var = QuickThinkConfig.with_model_profile(model=model, ollama_url=args.ollama_url)
             cfg_var.apply_preset(args.preset)
             cfg_var.mode = args.mode
+            cfg_var.request_timeout_s = float(args.request_timeout_s)
             cfg_var.scaffold_rules = v.rules
+            # Variant gate should measure scaffold behavior, not routing bypass effects.
+            cfg_var.bypass_short_prompts = False
+            cfg_var.adaptive_routing = False
             if model_supports_thinking(model):
                 cfg_var.think = False
             engines_variant[(model, v.name)] = QuickThinkEngine(cfg_var)
 
-    rows: list[dict[str, Any]] = []
-    for model in args.models:
-        for case in prompts:
-            task = str(case["prompt"])
-            for run_idx in range(1, args.runs + 1):
-                d = engines_direct[model].run(task)
-                rows.append(
-                    {
-                        "timestamp": now_iso(),
-                        "model": model,
-                        "mode": "direct",
-                        "prompt_id": case["prompt_id"],
-                        "group": case["group"],
-                        "run_index": run_idx,
-                        "answer": d.answer,
-                        "plan": d.plan,
-                        "plan_repaired": d.plan_repaired,
-                        "bypassed": d.bypassed,
-                        "route_score": d.route_score,
-                        "selected_plan_budget": d.selected_plan_budget,
-                        "plan_latency_ms": float(d.plan_latency_ms),
-                        "answer_latency_ms": float(d.answer_latency_ms),
-                        "total_latency_ms": float(d.total_latency_ms),
-                    }
-                )
-                for v in variants:
-                    r = engines_variant[(model, v.name)].run(task)
-                    rows.append(
-                        {
+    run_path = out_dir / "run_results.jsonl"
+    judged_path = out_dir / "judged_results.jsonl"
+    summary_json = out_dir / "summary.json"
+    summary_md = out_dir / "summary.md"
+    lift_path = out_dir / "lift_cases.jsonl"
+    meta_path = out_dir / "meta.json"
+    checkpoint_path = out_dir / "checkpoint.json"
+
+    existing_keys: set[tuple[str, str, str, int]] = set()
+    existing_direct_rows: dict[tuple[str, str, int], dict[str, Any]] = {}
+    write_mode = "w"
+    if args.resume:
+        existing_keys = load_existing_row_keys(run_path)
+        existing_direct_rows = load_existing_direct_rows(run_path)
+        write_mode = "a"
+
+    total = len(args.models) * len(prompts) * args.runs * (1 + len(variants))
+    done = len(existing_keys)
+    if args.resume and existing_keys:
+        print(f"resume found {len(existing_keys)} existing rows in {run_path}")
+
+    with run_path.open(write_mode, encoding="utf-8") as out_fh:
+        for model in args.models:
+            for case in prompts:
+                task = str(case["prompt"])
+                for run_idx in range(1, args.runs + 1):
+                    direct_key = (str(model), "direct", str(case["prompt_id"]), int(run_idx))
+                    if direct_key in existing_keys:
+                        d = None
+                    else:
+                        d = engines_direct[model].run(task)
+                        direct_row = {
+                            "timestamp": now_iso(),
+                            "model": model,
+                            "mode": "direct",
+                            "prompt_id": case["prompt_id"],
+                            "group": case["group"],
+                            "run_index": run_idx,
+                            "answer": d.answer,
+                            "plan": d.plan,
+                            "plan_repaired": d.plan_repaired,
+                            "bypassed": d.bypassed,
+                            "route_score": d.route_score,
+                            "selected_plan_budget": d.selected_plan_budget,
+                            "plan_latency_ms": float(d.plan_latency_ms),
+                            "answer_latency_ms": float(d.answer_latency_ms),
+                            "total_latency_ms": float(d.total_latency_ms),
+                        }
+                        append_jsonl_row(out_fh, direct_row)
+                        out_fh.flush()
+                        existing_keys.add(direct_key)
+                        done += 1
+                        if done % 25 == 0 or done == total:
+                            checkpoint_path.write_text(
+                                json.dumps({"done": done, "total": total, "updated_utc": now_iso()}, indent=2) + "\n",
+                                encoding="utf-8",
+                            )
+                            print(f"progress {done}/{total}")
+
+                    for v in variants:
+                        v_key = (str(model), str(v.name), str(case["prompt_id"]), int(run_idx))
+                        if v_key in existing_keys:
+                            continue
+                        if str(case.get("group", "")) in strict_direct_groups:
+                            # Task-class lane fallback: strict-format groups use direct output path.
+                            if d is None:
+                                cached = existing_direct_rows.get((str(model), str(case["prompt_id"]), int(run_idx)))
+                                if cached is not None:
+                                    v_row = {
+                                        "timestamp": now_iso(),
+                                        "model": model,
+                                        "mode": v.name,
+                                        "prompt_id": case["prompt_id"],
+                                        "group": case["group"],
+                                        "run_index": run_idx,
+                                        "answer": str(cached.get("answer", "")),
+                                        "plan": cached.get("plan"),
+                                        "plan_repaired": bool(cached.get("plan_repaired", False)),
+                                        "bypassed": bool(cached.get("bypassed", False)),
+                                        "route_score": int(cached.get("route_score", 0)),
+                                        "selected_plan_budget": int(cached.get("selected_plan_budget", 0)),
+                                        "plan_latency_ms": float(cached.get("plan_latency_ms", 0.0)),
+                                        "answer_latency_ms": float(cached.get("answer_latency_ms", 0.0)),
+                                        "total_latency_ms": float(cached.get("total_latency_ms", 0.0)),
+                                    }
+                                    append_jsonl_row(out_fh, v_row)
+                                    out_fh.flush()
+                                    existing_keys.add(v_key)
+                                    done += 1
+                                    if done % 25 == 0 or done == total:
+                                        checkpoint_path.write_text(
+                                            json.dumps({"done": done, "total": total, "updated_utc": now_iso()}, indent=2)
+                                            + "\n",
+                                            encoding="utf-8",
+                                        )
+                                        print(f"progress {done}/{total}")
+                                    continue
+                                d = engines_direct[model].run(task)
+                            r = d
+                        else:
+                            r = engines_variant[(model, v.name)].run(task)
+                        v_row = {
                             "timestamp": now_iso(),
                             "model": model,
                             "mode": v.name,
@@ -288,16 +442,18 @@ def main() -> int:
                             "answer_latency_ms": float(r.answer_latency_ms),
                             "total_latency_ms": float(r.total_latency_ms),
                         }
-                    )
+                        append_jsonl_row(out_fh, v_row)
+                        out_fh.flush()
+                        existing_keys.add(v_key)
+                        done += 1
+                        if done % 25 == 0 or done == total:
+                            checkpoint_path.write_text(
+                                json.dumps({"done": done, "total": total, "updated_utc": now_iso()}, indent=2) + "\n",
+                                encoding="utf-8",
+                            )
+                            print(f"progress {done}/{total}")
 
-    run_path = out_dir / "run_results.jsonl"
-    judged_path = out_dir / "judged_results.jsonl"
-    summary_json = out_dir / "summary.json"
-    summary_md = out_dir / "summary.md"
-    lift_path = out_dir / "lift_cases.jsonl"
-    meta_path = out_dir / "meta.json"
-
-    write_jsonl(run_path, rows)
+    run_rows = load_jsonl_rows(run_path)
     subprocess.run(
         [
             sys.executable,
@@ -315,7 +471,7 @@ def main() -> int:
         text=True,
     )
     judged_rows = [json.loads(l) for l in judged_path.read_text(encoding="utf-8").splitlines() if l.strip()]
-    summary = summarize(rows, judged_rows, models=args.models, variants=variants)
+    summary = summarize(run_rows, judged_rows, models=args.models, variants=variants)
     lift_cases = extract_lift_cases(judged_rows, variants=variants)
 
     # Per-group regression warnings vs direct.
@@ -354,6 +510,7 @@ def main() -> int:
         f"- Runs per prompt: `{args.runs}`",
         f"- Engine mode for variants: `{args.mode}`",
         f"- Preset: `{args.preset}`",
+        f"- Strict-direct groups: `{', '.join(sorted(strict_direct_groups)) if strict_direct_groups else '(none)'}`",
         "",
     ]
     for model in args.models:
@@ -403,7 +560,9 @@ def main() -> int:
         "variants_tested": [v.name for v in variants],
         "models": args.models,
         "runs": args.runs,
-        "rows": len(rows),
+        "resume": bool(args.resume),
+        "strict_direct_groups": sorted(strict_direct_groups),
+        "rows": len(run_rows),
     }
     meta_path.write_text(json.dumps(meta, indent=2) + "\n", encoding="utf-8")
     print(f"status=OK out_dir={out_dir}")

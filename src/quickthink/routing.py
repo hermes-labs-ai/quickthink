@@ -8,6 +8,10 @@ _MULTI_STEP_RE = re.compile(r"\b(plan|design|debug|strategy|step[- ]by[- ]step|a
 _COMPARISON_RE = re.compile(r"\b(compare|versus|vs\.?|tradeoff|pros and cons)\b", re.IGNORECASE)
 _STRUCTURED_RE = re.compile(r"\b(json|table|schema|bullet|list|format)\b", re.IGNORECASE)
 _AMBIGUITY_RE = re.compile(r"\b(best|optimize|could|should|maybe|might)\b", re.IGNORECASE)
+_STRICT_FORMAT_RE = re.compile(
+    r"\b(json only|yaml only|csv only|xml|exactly|lowercase only|yes or no only|no punctuation|line 1:|line 2:)\b",
+    re.IGNORECASE,
+)
 
 
 def complexity_score(prompt: str) -> int:
@@ -50,3 +54,12 @@ def should_bypass(prompt: str, config: QuickThinkConfig) -> tuple[bool, int, int
         return False, score, choose_plan_budget(score, config)
 
     return False, score, config.plan_budget_tokens
+
+
+def infer_task_class(prompt: str) -> str:
+    stripped = prompt.strip()
+    if _STRICT_FORMAT_RE.search(stripped):
+        return "strict_format"
+    if _MULTI_STEP_RE.search(stripped) or _COMPARISON_RE.search(stripped):
+        return "reasoning"
+    return "general"

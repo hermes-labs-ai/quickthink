@@ -2,7 +2,7 @@ from quickthink.config import PRESET_PROFILES, QuickThinkConfig, SUPPORTED_MODEL
 
 
 def test_supported_models_are_stable() -> None:
-    assert SUPPORTED_MODELS == ("qwen2.5:1.5b", "mistral:7b", "gemma3:27b")
+    assert SUPPORTED_MODELS == ("qwen2.5:1.5b", "mistral:7b", "gemma3:27b", "claude-haiku-4-5")
 
 
 def test_apply_preset_changes_routing_shape() -> None:

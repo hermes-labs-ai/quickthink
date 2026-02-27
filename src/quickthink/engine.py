@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from time import perf_counter
 
 from .config import QuickThinkConfig
+from .anthropic_client import AnthropicClient
 from .inline_protocol import extract_plan_and_answer
 from .ollama_client import OllamaClient
 from .plan_grammar import is_valid_plan, normalize_plan
@@ -13,7 +14,7 @@ from .prompts import (
     make_plan_prompt,
     make_plan_repair_prompt,
 )
-from .routing import should_bypass
+from .routing import infer_task_class, should_bypass
 
 
 @dataclass
@@ -36,36 +37,45 @@ class QuickThinkResult:
 class QuickThinkEngine:
     def __init__(self, config: QuickThinkConfig) -> None:
         self.config = config
-        self.client = OllamaClient(config.ollama_url, timeout_s=config.request_timeout_s)
+        if config.provider == "anthropic" or config.model.startswith("claude-"):
+            self.client = AnthropicClient(timeout_s=config.request_timeout_s)
+        else:
+            self.client = OllamaClient(config.ollama_url, timeout_s=config.request_timeout_s)
 
     def run(self, prompt: str) -> QuickThinkResult:
+        if self.config.lane_policy == "strict_safe" and infer_task_class(prompt) == "strict_format":
+            return self._run_direct(prompt=prompt, route_score=-1, selected_budget=self.config.min_plan_budget_tokens)
+
         bypass, route_score, selected_budget = should_bypass(prompt, self.config)
         if bypass:
-            start = perf_counter()
-            answer_raw = self.client.generate(
-                model=self.config.model,
-                prompt=prompt,
-                temperature=self.config.temperature,
-                top_p=self.config.top_p,
-                max_tokens=512,
-                think=self.config.think,
-            )
-            answer_ms = (perf_counter() - start) * 1000
-            return QuickThinkResult(
-                answer=answer_raw.get("response", "").strip(),
-                plan=None,
-                mode=self.config.mode,
-                bypassed=True,
-                route_score=route_score,
-                selected_plan_budget=selected_budget,
-                plan_repaired=False,
-                plan_latency_ms=0.0,
-                answer_latency_ms=answer_ms,
-            )
+            return self._run_direct(prompt=prompt, route_score=route_score, selected_budget=selected_budget)
 
         if self.config.mode == "two_pass":
             return self._run_two_pass(prompt, route_score, selected_budget)
         return self._run_lite(prompt, route_score, selected_budget)
+
+    def _run_direct(self, prompt: str, route_score: int, selected_budget: int) -> QuickThinkResult:
+        start = perf_counter()
+        answer_raw = self.client.generate(
+            model=self.config.model,
+            prompt=prompt,
+            temperature=self.config.temperature,
+            top_p=self.config.top_p,
+            max_tokens=512,
+            think=self.config.think,
+        )
+        answer_ms = (perf_counter() - start) * 1000
+        return QuickThinkResult(
+            answer=answer_raw.get("response", "").strip(),
+            plan=None,
+            mode=self.config.mode,
+            bypassed=True,
+            route_score=route_score,
+            selected_plan_budget=selected_budget,
+            plan_repaired=False,
+            plan_latency_ms=0.0,
+            answer_latency_ms=answer_ms,
+        )
 
     def _run_lite(self, prompt: str, route_score: int, selected_budget: int) -> QuickThinkResult:
         inline_prompt = make_inline_plan_answer_prompt(
