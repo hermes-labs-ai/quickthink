@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from statistics import mean
+from time import sleep
 from typing import Any
 
 from quickthink import QuickThinkConfig, QuickThinkEngine
@@ -258,6 +259,18 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--ollama-url", default="http://localhost:11434")
     p.add_argument("--request-timeout-s", type=float, default=120.0)
     p.add_argument(
+        "--cooldown-every-calls",
+        type=int,
+        default=0,
+        help="Pause after this many model calls (0 disables cooldown).",
+    )
+    p.add_argument(
+        "--cooldown-seconds",
+        type=float,
+        default=0.0,
+        help="Cooldown duration in seconds when --cooldown-every-calls is set.",
+    )
+    p.add_argument(
         "--strict-direct-groups",
         nargs="*",
         default=[],
@@ -342,6 +355,18 @@ def main() -> int:
 
     total = len(args.models) * len(prompts) * args.runs * (1 + len(variants))
     done = len(existing_keys)
+    model_calls = 0
+
+    def maybe_cooldown() -> None:
+        nonlocal model_calls
+        if args.cooldown_every_calls <= 0 or args.cooldown_seconds <= 0:
+            return
+        if model_calls > 0 and (model_calls % args.cooldown_every_calls == 0):
+            print(
+                f"cooldown after {model_calls} model calls: sleeping {args.cooldown_seconds:.0f}s",
+                flush=True,
+            )
+            sleep(float(args.cooldown_seconds))
     if args.resume and existing_keys:
         print(f"resume found {len(existing_keys)} existing rows in {run_path}")
 
@@ -355,6 +380,8 @@ def main() -> int:
                         d = None
                     else:
                         d = engines_direct[model].run(task)
+                        model_calls += 1
+                        maybe_cooldown()
                         direct_row = {
                             "timestamp": now_iso(),
                             "model": model,
@@ -422,9 +449,13 @@ def main() -> int:
                                         print(f"progress {done}/{total}")
                                     continue
                                 d = engines_direct[model].run(task)
+                                model_calls += 1
+                                maybe_cooldown()
                             r = d
                         else:
                             r = engines_variant[(model, v.name)].run(task)
+                            model_calls += 1
+                            maybe_cooldown()
                         v_row = {
                             "timestamp": now_iso(),
                             "model": model,

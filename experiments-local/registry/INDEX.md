@@ -19,6 +19,7 @@ Canonical run list with one file per run trace.
 | philo_assumption_challenge | run_haiku45_instrlane_n4 | active | claude-haiku-4-5 | 4 | `experiments-local/registry/run_philo_assumption_challenge__run_haiku45_instrlane_n4.md` |
 | philo_assumption_challenge | run_haiku45_json_echo_n4 | active | claude-haiku-4-5 | 4 | `experiments-local/registry/run_philo_assumption_challenge__run_haiku45_json_echo_n4.md` |
 | philo_assumption_challenge | run_qwen15_instrlane_n4 | active | qwen2.5:1.5b | 4 | `experiments-local/registry/run_philo_assumption_challenge__run_qwen15_instrlane_n4.md` |
+| philo_assumption_challenge | run_qwen15_v11_instr_n8_rerun_2026-02-27 | active | qwen2.5:1.5b | 8 | `experiments-local/registry/run_philo_assumption_challenge__run_qwen15_v11_instr_n8_rerun_2026-02-27.md` |
 | philo_assumption_challenge | run_qwen_n3_full | reference | qwen2.5:1.5b | 3 | `experiments-local/registry/run_philo_assumption_challenge__run_qwen_n3_full.md` |
 | philo_assumption_challenge | run_mistral_n3_full | reference | mistral:7b | 3 | `experiments-local/registry/run_philo_assumption_challenge__run_mistral_n3_full.md` |
 | philo_assumption_challenge | run_qwen_n1_smoke | reference | qwen2.5:1.5b | 1 | `experiments-local/registry/run_philo_assumption_challenge__run_qwen_n1_smoke.md` |

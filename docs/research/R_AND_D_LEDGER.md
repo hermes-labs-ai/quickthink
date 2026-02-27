@@ -267,3 +267,28 @@ Maintain a single, date-ordered log of research direction, decisions, and eviden
   - Complete qwen instruction-lane confirmation at larger N with fresh run directory.
   - Re-run mistral instruction-lane variants under stable execution settings.
   - Decide whether to continue Haiku lane exploration or pause in favor of higher-tier Anthropic test.
+
+### Entry 2026-02-27T12:12:12Z
+- Owner: Codex
+- Session framing: throttled continuation run under machine-safety cooldown policy
+- Objective tier (`no-loss-first` | `balanced` | `max-gain`): `balanced`
+- Inputs:
+  - `experiments-local/philo_assumption_challenge_2026-02-25/run_qwen15_v11_instr_n8_rerun_2026-02-27/summary.md`
+  - `experiments-local/philo_assumption_challenge_2026-02-25/run_qwen15_v11_instr_n8_rerun_2026-02-27/summary.json`
+  - `experiments-local/philo_assumption_challenge_2026-02-25/run_mistral_instrlane_n1_rerun_2026-02-27/run_results.jsonl` (partial)
+- Runs added:
+  - `run_qwen15_v11_instr_n8_rerun_2026-02-27`
+- Observed:
+  - qwen1.5b `v11_instruction_validator` at n=8 is slightly negative vs direct (`score_delta_vs_direct=-0.031`) with weak pairwise signal (`wins=21 losses=22 ties=53`).
+  - `structured_output` regressed for qwen v11 (`score_delta_vs_direct=-0.542`); latency was slightly worse (`+8.44ms`).
+  - mistral throttled rerun was started but intentionally stopped early at 11/36 rows due conservative cooldown pacing and time budget.
+- Interpreted:
+  - Earlier small-n qwen optimism for v11 does not hold at larger sample size.
+  - qwen instruction-lane default should remain `direct` unless a revised variant clears structured-output gates.
+  - 5-minute cooldown every 6 model calls is operationally safe but materially slows throughput; planning must account for this.
+- Decision impact:
+  - qwen instruction-lane recommendation shifts from candidate-promote to `HOLD` under `balanced` gates.
+  - mistral instruction-lane remains unresolved pending completed run.
+- Next experiments:
+  - Design/refine qwen instruction variant that explicitly protects structured_output and rerun at n>=4 before reconsidering promotion.
+  - Resume mistral run with the same cooldown policy to full completion (or reduce prompt subset with documented scope).
