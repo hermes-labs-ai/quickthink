@@ -2,6 +2,15 @@
 
 This guide gets a first-time user from clone to successful local run in under 10 minutes.
 
+## What quickthink is optimized for
+
+`quickthink` is optimized as **local-first inference control** for local model workflows:
+- **local LLM routing** for task-adaptive prompt handling
+- **small model optimization** on constrained hardware
+- **latency-aware inference** via bypass/routing controls
+- **structured output reliability** through planning grammar and eval discipline
+- practical **Ollama middleware** usage with **agent runtime compatibility**
+
 ## 1) Prerequisites
 
 - Python 3.9+

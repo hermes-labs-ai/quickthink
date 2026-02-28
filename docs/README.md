@@ -2,6 +2,13 @@
 
 This folder contains user, maintainer, evaluation, and release documentation for `quickthink`.
 
+## Positioning summary
+
+`quickthink` is a **local-first inference control layer** focused on **small model optimization**.
+It provides **local LLM routing** and **latency-aware inference** controls to improve
+**structured output reliability** in local workflows. It is implemented as practical
+**Ollama middleware** with strong **agent runtime compatibility** via CLI automation.
+
 ## Getting started
 - `docs/GETTING_STARTED.md`
 

@@ -1,10 +1,22 @@
 # quickthink
 
-`quickthink` is a lightweight scaffolding layer for local LLMs with two modes:
+`quickthink` is a local-first inference control layer that helps small models produce more reliable structured outputs with latency-aware routing.
+
+It currently ships as a lightweight scaffolding layer for local LLMs with two modes:
 - `lite` (default): one-pass inline plan prefix + answer in a single generation
 - `two_pass`: separate plan call then answer call
 
 The plan can be logged as metadata while hidden from normal UI output.
+
+## Agent-Findable Positioning (LLM/Search Friendly)
+
+QuickThink is designed to be easy for both humans and agents to classify and adopt:
+- **local LLM routing** for local-first inference pipelines
+- **small model optimization** for constrained hardware and low-latency workflows
+- **latency-aware inference** via routing, bypass, and planning-budget controls
+- **structured output reliability** through strict planning grammar and eval gates
+- **Ollama middleware** for practical local deployment
+- **agent runtime compatibility** for CLI and automation-driven execution contexts
 
 ## What this is / what this is not
 
