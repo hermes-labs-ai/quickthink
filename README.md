@@ -2,9 +2,10 @@
 
 `quickthink` is a local-first inference control layer that helps small models produce more reliable structured outputs with latency-aware routing.
 
-It currently ships as a lightweight scaffolding layer for local LLMs with two modes:
+It currently ships as a lightweight scaffolding layer for local LLMs with three modes:
 - `lite` (default): one-pass inline plan prefix + answer in a single generation
 - `two_pass`: separate plan call then answer call
+- `direct`: no planning pass, raw prompt to model
 
 The plan can be logged as metadata while hidden from normal UI output.
 
@@ -35,20 +36,19 @@ What this is not:
 Small/local models are fast but often underperform on multi-step tasks.
 `quickthink` adds a strict planning pass (6-16 keyword tokens by default) to improve response quality without full verbose reasoning traces.
 
-## MVP scope
+## Features
 
 - Ollama-first integration
-- Model profiles:
-  - `qwen2.5:1.5b`
-  - `mistral:7b`
-  - `gemma3:27b`
+- Model profiles: `qwen2.5:1.5b`, `mistral:7b`, `gemma3:27b`
+- Three execution modes: `lite` (default), `two_pass`, `direct`
+- Preset routing profiles: `fast`, `balanced`, `strict`
+- Lane policy: `default` or `strict_safe` (routes strict-format tasks to direct path)
 - Hidden plan by default, optional plan display/logging
 - Bypass mode for short prompts (latency control)
 - Adaptive routing (`skip`, `12-token`, `max-token` planning lanes)
 - Strict plan grammar: `g:<...>;c:<...>;s:<...>;r:<...>`
-- Hidden-plan extraction from inline output protocol:
-  - `[P]g:...;c:...;s:...;r:...`
-  - `[A]final answer`
+- Local eval UI server (`quickthink ui`) at `http://127.0.0.1:7860`
+- Canonical eval harness: run → judge → validate → report
 
 ## Install
 
@@ -91,9 +91,6 @@ If this command works, your local setup is ready.
 - OSS readiness scorecard: `docs/release/OSS_READINESS_SCORECARD_2026-02-25.md`
 - OSS standards alignment (with external references): `docs/release/OSS_STANDARDS_ALIGNMENT_2026.md`
 - Agent operating notes: `AGENTS.md`
-- Owner notebook + GTM plan: `docs/research/QUICKTHINK_OWNER_NOTEBOOK_AND_GTM_2026-02-26.md`
-- Strategy book (market/GTM positioning): `docs/research/QUICKTHINK_DELOITTE_STYLE_STRATEGY_BOOK_2026-02-26.md`
-- Executive report: `docs/research/QUICKTHINK_PRODUCT_INITIATIVE_EXECUTIVE_REPORT_2026-02-26.md`
 
 ## Repository Layout
 
