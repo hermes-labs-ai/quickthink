@@ -4,7 +4,6 @@ from dataclasses import dataclass
 from time import perf_counter
 
 from .config import QuickThinkConfig
-from .anthropic_client import AnthropicClient
 from .inline_protocol import extract_plan_and_answer
 from .ollama_client import OllamaClient
 from .plan_grammar import is_valid_plan, normalize_plan
@@ -37,10 +36,7 @@ class QuickThinkResult:
 class QuickThinkEngine:
     def __init__(self, config: QuickThinkConfig) -> None:
         self.config = config
-        if config.provider == "anthropic" or config.model.startswith("claude-"):
-            self.client = AnthropicClient(timeout_s=config.request_timeout_s)
-        else:
-            self.client = OllamaClient(config.ollama_url, timeout_s=config.request_timeout_s)
+        self.client = OllamaClient(config.ollama_url, timeout_s=config.request_timeout_s)
 
     def run(self, prompt: str) -> QuickThinkResult:
         if self.config.lane_policy == "strict_safe" and infer_task_class(prompt) == "strict_format":
@@ -52,6 +48,8 @@ class QuickThinkEngine:
 
         if self.config.mode == "two_pass":
             return self._run_two_pass(prompt, route_score, selected_budget)
+        if self.config.mode == "direct":
+            return self._run_direct(prompt=prompt, route_score=route_score, selected_budget=selected_budget)
         return self._run_lite(prompt, route_score, selected_budget)
 
     def _run_direct(self, prompt: str, route_score: int, selected_budget: int) -> QuickThinkResult:

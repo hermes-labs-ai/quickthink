@@ -7,7 +7,6 @@ SUPPORTED_MODELS = (
     "qwen2.5:1.5b",
     "mistral:7b",
     "gemma3:27b",
-    "claude-haiku-4-5",
 )
 
 MODEL_PROFILES = {
@@ -31,13 +30,6 @@ MODEL_PROFILES = {
         "max_plan_budget_tokens": 14,
         "temperature": 0.2,
         "top_p": 0.85,
-    },
-    "claude-haiku-4-5": {
-        "plan_budget_tokens": 8,
-        "min_plan_budget_tokens": 6,
-        "max_plan_budget_tokens": 12,
-        "temperature": 0.25,
-        "top_p": 0.9,
     },
 }
 
@@ -73,7 +65,7 @@ PRESET_PROFILES = {
 class QuickThinkConfig:
     model: str = "qwen2.5:1.5b"
     ollama_url: str = "http://localhost:11434"
-    provider: str = "ollama"  # ollama | anthropic
+    provider: str = "ollama"
     plan_budget_tokens: int = 8
     min_plan_budget_tokens: int = 6
     max_plan_budget_tokens: int = 12
@@ -94,11 +86,9 @@ class QuickThinkConfig:
     @classmethod
     def with_model_profile(cls, model: str, ollama_url: str = "http://localhost:11434") -> "QuickThinkConfig":
         profile = MODEL_PROFILES.get(model, {})
-        provider = "anthropic" if model.startswith("claude-") else "ollama"
         return cls(
             model=model,
             ollama_url=ollama_url,
-            provider=provider,
             plan_budget_tokens=profile.get("plan_budget_tokens", 8),
             min_plan_budget_tokens=profile.get("min_plan_budget_tokens", 6),
             max_plan_budget_tokens=profile.get("max_plan_budget_tokens", 12),

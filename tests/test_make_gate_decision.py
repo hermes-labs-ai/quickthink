@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import subprocess
+import sys
 from pathlib import Path
 
 
@@ -47,7 +48,7 @@ def test_gate_decision_marks_all_tie_lane_inconclusive(tmp_path: Path) -> None:
     _write_jsonl(judged_path, judged_rows)
 
     cmd = [
-        ".venv/bin/python",
+        sys.executable,
         "scripts/eval_harness/make_gate_decision.py",
         "--runs-jsonl",
         str(runs_path),
