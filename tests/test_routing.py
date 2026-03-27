@@ -1,5 +1,5 @@
 from quickthink.config import QuickThinkConfig
-from quickthink.routing import complexity_score, should_bypass
+from quickthink.routing import complexity_score, infer_task_class, should_bypass
 
 
 def test_low_complexity_bypasses() -> None:
@@ -25,3 +25,13 @@ def test_high_complexity_uses_plan() -> None:
 def test_complexity_score_signals() -> None:
     prompt = "Could you compare and optimize this architecture with a table output?"
     assert complexity_score(prompt) >= 3
+
+
+def test_infer_task_class_strict_format() -> None:
+    prompt = 'json only: {"ok":true,"why":"short"}'
+    assert infer_task_class(prompt) == "strict_format"
+
+
+def test_infer_task_class_reasoning() -> None:
+    prompt = "Design a strategy and compare tradeoffs."
+    assert infer_task_class(prompt) == "reasoning"

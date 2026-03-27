@@ -1,0 +1,50 @@
+[
+  {
+    "name": "v01_anchor_dual_relation",
+    "rules": "treat_plan_as_binding_relation_between_task_and_answer;keep_goal_and_constraints_explicit;avoid_unanchored_associations"
+  },
+  {
+    "name": "v02_language_game_moves",
+    "rules": "interpret_request_as_language_game;select_legal_moves_only;map_each_move_to_user_task_terms"
+  },
+  {
+    "name": "v03_horizon_fusion_guard",
+    "rules": "separate_user_horizon_from_model_priors;only_merge_when_evidence_in_prompt_supports_merge"
+  },
+  {
+    "name": "v04_negative_capability",
+    "rules": "preserve_ambiguity_when_underconstrained;state_minimal_assumptions_before_resolution"
+  },
+  {
+    "name": "v05_curvature_first",
+    "rules": "prioritize_high_curvature_tokens_constraints_and_strategy;compress_low_curvature_details"
+  },
+  {
+    "name": "v06_contradiction_probe",
+    "rules": "probe_for_internal_contradiction_between_goal_constraints_strategy_repair_before_answer"
+  },
+  {
+    "name": "v07_boundary_literalism",
+    "rules": "treat_requested_output_format_as_hard_boundary;do_not_trade_format_for_extra_explanation"
+  },
+  {
+    "name": "v08_continuity_memory_light",
+    "rules": "if_continuity_hint_present_preserve_template_and_policy_terms_across_answer"
+  },
+  {
+    "name": "v09_adversarial_paraphrase_resilience",
+    "rules": "normalize_surface_wording;preserve_semantic_intent_under_paraphrase"
+  },
+  {
+    "name": "v10_minimal_commitment",
+    "rules": "commit_only_to_claims_supported_by_prompt_or_computable_reasoning;avoid_overreach"
+  },
+  {
+    "name": "v11_repair_then_realize",
+    "rules": "repair_plan_semantics_first_then_generate_answer;fallback_to_safe_general_plan_if_needed"
+  },
+  {
+    "name": "v12_constraint_priority_order",
+    "rules": "prioritize_in_order_format_then_explicit_constraints_then_correctness_narration"
+  }
+]

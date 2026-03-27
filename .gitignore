@@ -4,3 +4,14 @@ __pycache__/
 .pytest_cache/
 logs/
 *.egg-info/
+experiments-local/
+docs/patent/
+hermeslabs-site/
+docs/agent-comms/
+docs/evals/results/
+!docs/evals/results/README.md
+scripts/ops/agent_comms.py
+AGENT.md
+.DS_Store
+output/
+tmp/

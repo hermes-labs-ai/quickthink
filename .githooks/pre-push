@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+echo "[pre-push] tests"
+PYTHONPATH=src .venv/bin/pytest -q
+
+echo "[pre-push] compile"
+python3 -m compileall -q src scripts tests
+
+echo "[pre-push] research hygiene"
+scripts/check_research_hygiene.sh

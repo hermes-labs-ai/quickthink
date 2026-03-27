@@ -1,0 +1,24 @@
+{
+  "created_utc": "2026-02-25T20:31:02+00:00",
+  "prompt_set": "docs/research/codex/experiments/prompt_subset_balanced12_2026-02-25.jsonl",
+  "variants_file": "docs/research/codex/experiments/phenomenology_variants_2026-02-25.json",
+  "variants_tested": [
+    "v01_anchor_dual_relation",
+    "v02_language_game_moves",
+    "v03_horizon_fusion_guard",
+    "v04_negative_capability",
+    "v05_curvature_first",
+    "v06_contradiction_probe",
+    "v07_boundary_literalism",
+    "v08_continuity_memory_light",
+    "v09_adversarial_paraphrase_resilience",
+    "v10_minimal_commitment",
+    "v11_repair_then_realize",
+    "v12_constraint_priority_order"
+  ],
+  "models": [
+    "qwen2.5:1.5b"
+  ],
+  "runs": 5,
+  "rows": 780
+}

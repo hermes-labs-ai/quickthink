@@ -1,0 +1,44 @@
+name: Release Supply Chain
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write
+  attestations: write
+
+jobs:
+  sbom-and-attestation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - name: Build source archive
+        run: |
+          mkdir -p dist
+          git archive --format=tar.gz --prefix=quickthink/ HEAD > dist/quickthink-source.tar.gz
+
+      - name: Generate SBOM
+        uses: anchore/sbom-action@28d71544de8eaf1b958d335707167c5f783590ad
+        with:
+          path: ./
+          format: spdx-json
+          output-file: dist/sbom.spdx.json
+
+      - name: Upload release supply-chain artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: release-supply-chain
+          path: |
+            dist/quickthink-source.tar.gz
+            dist/sbom.spdx.json
+          if-no-files-found: error
+
+      - name: Attest source archive provenance
+        uses: actions/attest-build-provenance@ef244123eb79f2f7a7e75d99086184180e6d0018
+        with:
+          subject-path: dist/quickthink-source.tar.gz

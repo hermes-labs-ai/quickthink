@@ -1,0 +1,19 @@
+{
+  "timestamp": "2026-02-25T13:26:21+00:00",
+  "git_sha": "999f171377266601f9c09543b1ee200f67297492",
+  "dataset_path": "docs/research/codex/experiments/prompt_subset_balanced12_2026-02-25.jsonl",
+  "dataset_sha256": "ffb63c753aa3f75d9a9b9e0f75d5ae28ad0005059d5b583e79b341af6bf750ca",
+  "models": [
+    "qwen2.5:1.5b",
+    "mistral:7b"
+  ],
+  "modes": [
+    "direct",
+    "lite",
+    "two_pass"
+  ],
+  "runs": 1,
+  "ollama_url": "http://localhost:11434",
+  "continuity_hint": null,
+  "prompt_count": 12
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "name": "v02_language_game_moves",
+    "rules": "interpret_request_as_language_game;select_legal_moves_only;map_each_move_to_user_task_terms"
+  },
+  {
+    "name": "v03_horizon_fusion_guard",
+    "rules": "separate_user_horizon_from_model_priors;only_merge_when_evidence_in_prompt_supports_merge"
+  },
+  {
+    "name": "v04_negative_capability",
+    "rules": "preserve_ambiguity_when_underconstrained;state_minimal_assumptions_before_resolution"
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "name": "v02_full",
+    "rules": "interpret_request_as_language_game;select_legal_moves_only;map_each_move_to_user_task_terms"
+  },
+  {
+    "name": "v02_ablate_legal_moves",
+    "rules": "interpret_request_as_language_game;map_each_move_to_user_task_terms"
+  },
+  {
+    "name": "v02_ablate_task_term_map",
+    "rules": "interpret_request_as_language_game;select_legal_moves_only"
+  },
+  {
+    "name": "v03_full",
+    "rules": "separate_user_horizon_from_model_priors;only_merge_when_evidence_in_prompt_supports_merge"
+  },
+  {
+    "name": "v03_ablate_horizon_separation",
+    "rules": "only_merge_when_evidence_in_prompt_supports_merge"
+  },
+  {
+    "name": "v03_ablate_evidence_merge_gate",
+    "rules": "separate_user_horizon_from_model_priors"
+  }
+]

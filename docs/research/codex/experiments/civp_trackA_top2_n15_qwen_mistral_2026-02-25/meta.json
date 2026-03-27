@@ -1,0 +1,16 @@
+{
+  "created_utc": "2026-02-26T10:28:23+00:00",
+  "prompt_set": "docs/research/codex/experiments/prompt_subset_balanced12_2026-02-25.jsonl",
+  "variants_file": "docs/research/codex/experiments/variants_top2_2026-02-25.json",
+  "variants_tested": [
+    "v02_language_game_moves",
+    "v03_horizon_fusion_guard"
+  ],
+  "models": [
+    "qwen2.5:1.5b",
+    "mistral:7b"
+  ],
+  "runs": 15,
+  "strict_direct_groups": [],
+  "rows": 1080
+}

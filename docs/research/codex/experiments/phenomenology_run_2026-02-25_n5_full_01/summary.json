@@ -1,0 +1,278 @@
+{
+  "models": {
+    "qwen2.5:1.5b": {
+      "modes": {
+        "direct": {
+          "avg_score": 5.666666666666667,
+          "avg_latency_ms": 2759.4513105666733,
+          "rows": 60,
+          "score_delta_vs_direct": 0.0,
+          "latency_delta_vs_direct_ms": 0.0
+        },
+        "v01_anchor_dual_relation": {
+          "avg_score": 5.716666666666667,
+          "avg_latency_ms": 1473.575528499989,
+          "rows": 60,
+          "score_delta_vs_direct": 0.04999999999999982,
+          "latency_delta_vs_direct_ms": -1285.8757820666842
+        },
+        "v02_language_game_moves": {
+          "avg_score": 5.75,
+          "avg_latency_ms": 1828.9158444666698,
+          "rows": 60,
+          "score_delta_vs_direct": 0.08333333333333304,
+          "latency_delta_vs_direct_ms": -930.5354661000035
+        },
+        "v03_horizon_fusion_guard": {
+          "avg_score": 5.783333333333333,
+          "avg_latency_ms": 2178.94394233333,
+          "rows": 60,
+          "score_delta_vs_direct": 0.11666666666666625,
+          "latency_delta_vs_direct_ms": -580.5073682333432
+        },
+        "v04_negative_capability": {
+          "avg_score": 5.816666666666666,
+          "avg_latency_ms": 1898.6815165833386,
+          "rows": 60,
+          "score_delta_vs_direct": 0.14999999999999947,
+          "latency_delta_vs_direct_ms": -860.7697939833347
+        },
+        "v05_curvature_first": {
+          "avg_score": 5.6,
+          "avg_latency_ms": 1707.1938305999995,
+          "rows": 60,
+          "score_delta_vs_direct": -0.06666666666666732,
+          "latency_delta_vs_direct_ms": -1052.2574799666738
+        },
+        "v06_contradiction_probe": {
+          "avg_score": 5.616666666666666,
+          "avg_latency_ms": 1793.8110833333296,
+          "rows": 60,
+          "score_delta_vs_direct": -0.05000000000000071,
+          "latency_delta_vs_direct_ms": -965.6402272333437
+        },
+        "v07_boundary_literalism": {
+          "avg_score": 5.716666666666667,
+          "avg_latency_ms": 1955.1548374833399,
+          "rows": 60,
+          "score_delta_vs_direct": 0.04999999999999982,
+          "latency_delta_vs_direct_ms": -804.2964730833335
+        },
+        "v08_continuity_memory_light": {
+          "avg_score": 5.583333333333333,
+          "avg_latency_ms": 2160.474454266665,
+          "rows": 60,
+          "score_delta_vs_direct": -0.08333333333333393,
+          "latency_delta_vs_direct_ms": -598.9768563000084
+        },
+        "v09_adversarial_paraphrase_resilience": {
+          "avg_score": 5.616666666666666,
+          "avg_latency_ms": 2041.0256235333493,
+          "rows": 60,
+          "score_delta_vs_direct": -0.05000000000000071,
+          "latency_delta_vs_direct_ms": -718.425687033324
+        },
+        "v10_minimal_commitment": {
+          "avg_score": 5.6,
+          "avg_latency_ms": 2023.4005180166603,
+          "rows": 60,
+          "score_delta_vs_direct": -0.06666666666666732,
+          "latency_delta_vs_direct_ms": -736.050792550013
+        },
+        "v11_repair_then_realize": {
+          "avg_score": 5.633333333333334,
+          "avg_latency_ms": 1970.2035957666526,
+          "rows": 60,
+          "score_delta_vs_direct": -0.033333333333333215,
+          "latency_delta_vs_direct_ms": -789.2477148000207
+        },
+        "v12_constraint_priority_order": {
+          "avg_score": 5.633333333333334,
+          "avg_latency_ms": 1926.7007297833534,
+          "rows": 60,
+          "score_delta_vs_direct": -0.033333333333333215,
+          "latency_delta_vs_direct_ms": -832.75058078332
+        }
+      }
+    }
+  },
+  "pairwise_vs_direct": {
+    "qwen2.5:1.5b:v01_anchor_dual_relation": {
+      "wins": 10,
+      "losses": 11,
+      "ties": 39,
+      "non_tie_win_rate": 0.47619047619047616,
+      "pvalue_two_sided_sign_test": 1.0
+    },
+    "qwen2.5:1.5b:v02_language_game_moves": {
+      "wins": 15,
+      "losses": 13,
+      "ties": 32,
+      "non_tie_win_rate": 0.5357142857142857,
+      "pvalue_two_sided_sign_test": 0.8505540192127228
+    },
+    "qwen2.5:1.5b:v03_horizon_fusion_guard": {
+      "wins": 13,
+      "losses": 12,
+      "ties": 35,
+      "non_tie_win_rate": 0.52,
+      "pvalue_two_sided_sign_test": 1.0
+    },
+    "qwen2.5:1.5b:v04_negative_capability": {
+      "wins": 15,
+      "losses": 11,
+      "ties": 34,
+      "non_tie_win_rate": 0.5769230769230769,
+      "pvalue_two_sided_sign_test": 0.557197093963623
+    },
+    "qwen2.5:1.5b:v05_curvature_first": {
+      "wins": 14,
+      "losses": 16,
+      "ties": 30,
+      "non_tie_win_rate": 0.4666666666666667,
+      "pvalue_two_sided_sign_test": 0.855535551905632
+    },
+    "qwen2.5:1.5b:v06_contradiction_probe": {
+      "wins": 13,
+      "losses": 12,
+      "ties": 35,
+      "non_tie_win_rate": 0.52,
+      "pvalue_two_sided_sign_test": 1.0
+    },
+    "qwen2.5:1.5b:v07_boundary_literalism": {
+      "wins": 13,
+      "losses": 12,
+      "ties": 35,
+      "non_tie_win_rate": 0.52,
+      "pvalue_two_sided_sign_test": 1.0
+    },
+    "qwen2.5:1.5b:v08_continuity_memory_light": {
+      "wins": 10,
+      "losses": 14,
+      "ties": 36,
+      "non_tie_win_rate": 0.4166666666666667,
+      "pvalue_two_sided_sign_test": 0.5412561893463135
+    },
+    "qwen2.5:1.5b:v09_adversarial_paraphrase_resilience": {
+      "wins": 14,
+      "losses": 16,
+      "ties": 30,
+      "non_tie_win_rate": 0.4666666666666667,
+      "pvalue_two_sided_sign_test": 0.855535551905632
+    },
+    "qwen2.5:1.5b:v10_minimal_commitment": {
+      "wins": 13,
+      "losses": 15,
+      "ties": 32,
+      "non_tie_win_rate": 0.4642857142857143,
+      "pvalue_two_sided_sign_test": 0.8505540192127228
+    },
+    "qwen2.5:1.5b:v11_repair_then_realize": {
+      "wins": 11,
+      "losses": 13,
+      "ties": 36,
+      "non_tie_win_rate": 0.4583333333333333,
+      "pvalue_two_sided_sign_test": 0.8388197422027588
+    },
+    "qwen2.5:1.5b:v12_constraint_priority_order": {
+      "wins": 10,
+      "losses": 11,
+      "ties": 39,
+      "non_tie_win_rate": 0.47619047619047616,
+      "pvalue_two_sided_sign_test": 1.0
+    }
+  },
+  "warnings": [
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v01_anchor_dual_relation",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.2666666666666666
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v02_language_game_moves",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.2666666666666666
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v05_curvature_first",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.7333333333333334
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v06_contradiction_probe",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.3333333333333339
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v06_contradiction_probe",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.6666666666666661
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v08_continuity_memory_light",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.4666666666666659
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v09_adversarial_paraphrase_resilience",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.2666666666666666
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v09_adversarial_paraphrase_resilience",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.4666666666666659
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v10_minimal_commitment",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.2666666666666666
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v10_minimal_commitment",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.9333333333333327
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v11_repair_then_realize",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.40000000000000036
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v12_constraint_priority_order",
+      "group": "instruction_constraints",
+      "score_delta_vs_direct": -0.2666666666666666
+    },
+    {
+      "type": "group_regression",
+      "model": "qwen2.5:1.5b",
+      "mode": "v12_constraint_priority_order",
+      "group": "structured_output",
+      "score_delta_vs_direct": -0.39999999999999947
+    }
+  ]
+}
