@@ -603,7 +603,7 @@ HTML_PAGE = """<!doctype html>
             path,
             expected_prompts: Number(expectedPromptsEl.value || "0"),
             expected_runs: Number(expectedRunsEl.value || "0"),
-            models: (modelsEl.value || "").trim().split(/\s+/).filter(Boolean)
+            models: (modelsEl.value || "").trim().split(/\\s+/).filter(Boolean)
           })
         });
         const data = await res.json();
@@ -642,7 +642,7 @@ HTML_PAGE = """<!doctype html>
             manifest_out: evalManifestPathEl.value.trim() || "docs/evals/results/run_manifest.json",
             runs: Number(evalRunsEl.value || "3"),
             limit: Number(evalLimitEl.value || "0"),
-            models: (evalModelsEl.value || "").trim().split(/\s+/).filter(Boolean),
+            models: (evalModelsEl.value || "").trim().split(/\\s+/).filter(Boolean),
             ollama_url: ollamaEl.value.trim() || "http://localhost:11434",
             continuity_hint: continuityEl.value.trim() || null
           })
