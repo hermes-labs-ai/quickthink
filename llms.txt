@@ -1,0 +1,72 @@
+# quickthink
+
+Local-first inference control layer that adds a compressed planning scaffold
+to small LLMs, improving structured output reliability with latency-aware routing.
+
+## What it is
+
+quickthink wraps Ollama-backed LLM calls with a lightweight scaffold:
+- `lite` mode (default): one-pass inline plan prefix + answer in one generation
+- `two_pass` mode: separate plan call then answer call
+- `direct` mode: no planning pass, raw prompt to model
+
+Preset routing profiles (`fast`, `balanced`, `strict`) and lane policies
+(`default`, `strict_safe`) let you tune the overhead-vs-quality tradeoff.
+
+## When to use
+
+- You run local LLMs via Ollama and want more reliable structured outputs
+- You need latency-aware routing that can bypass planning for short prompts
+- You want a canonical eval harness (run/judge/validate/report) for reproducible
+  project-level quality checks
+
+## When not to use
+
+- You need hosted API calls (this is local-first only)
+- You want a full agent orchestration platform
+- You need guaranteed performance improvements — gains are model/task dependent
+
+## Install
+
+```
+pip install quickthink
+```
+
+Requires Ollama running locally: https://ollama.com/
+
+## Key commands
+
+```bash
+# Ask with compressed planning
+quickthink ask "Design a retry strategy" --model qwen2.5:1.5b
+
+# Show plan prefix in terminal
+quickthink ask "Design a retry strategy" --show-plan
+
+# Two-pass mode with routing diagnostics
+quickthink ask "Design a retry strategy" --mode two_pass --show-route
+
+# Benchmark three modes
+quickthink bench "Is 2+2=4?" --runs 3
+
+# Launch local eval UI
+quickthink ui
+# then open http://127.0.0.1:7860
+
+# List supported models
+quickthink list-models
+
+# List preset profiles
+quickthink list-presets
+```
+
+## Supported models
+
+- qwen2.5:1.5b
+- mistral:7b
+- gemma3:27b
+
+## Source
+
+https://github.com/hermes-labs-ai/quickthink
+Apache-2.0. Part of the Hermes Labs audit infrastructure stack.
