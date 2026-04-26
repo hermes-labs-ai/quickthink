@@ -501,7 +501,7 @@ def main() -> int:
         check=True,
         text=True,
     )
-    judged_rows = [json.loads(l) for l in judged_path.read_text(encoding="utf-8").splitlines() if l.strip()]
+    judged_rows = [json.loads(line) for line in judged_path.read_text(encoding="utf-8").splitlines() if line.strip()]
     summary = summarize(run_rows, judged_rows, models=args.models, variants=variants)
     lift_cases = extract_lift_cases(judged_rows, variants=variants)
 

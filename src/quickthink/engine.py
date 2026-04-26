@@ -99,7 +99,7 @@ class QuickThinkEngine:
 
         if plan and not is_valid_plan(plan, selected_budget):
             repaired = True
-            plan = f"g:solve;c:constraints;s:direct_reasoning;r:verify_output"
+            plan = "g:solve;c:constraints;s:direct_reasoning;r:verify_output"
         if plan is None:
             repaired = True
 
@@ -147,7 +147,7 @@ class QuickThinkEngine:
             if is_valid_plan(repaired_plan, selected_budget):
                 plan = repaired_plan
             else:
-                plan = f"g:solve;c:constraints;s:direct_reasoning;r:verify_output"
+                plan = "g:solve;c:constraints;s:direct_reasoning;r:verify_output"
 
         answer_prompt = make_answer_prompt(prompt, plan)
         start = perf_counter()

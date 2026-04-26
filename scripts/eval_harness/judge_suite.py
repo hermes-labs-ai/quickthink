@@ -132,7 +132,6 @@ def score_format_validity(prompt: str, answer: str) -> tuple[int, list[str]]:
 
 
 def score_verbosity(prompt: str, answer: str) -> tuple[int, list[str]]:
-    notes: list[str] = []
     wc = word_count(answer)
 
     match = WORD_EXACT_HINT.search(prompt)

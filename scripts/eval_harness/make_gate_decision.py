@@ -10,7 +10,6 @@ from pathlib import Path
 from statistics import mean
 from typing import Any
 
-
 TASK_CLASS_BY_GROUP = {
     "instruction_constraints": "strict_format",
     "structured_output": "strict_format",

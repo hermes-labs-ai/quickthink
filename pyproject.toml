@@ -60,3 +60,16 @@ where = ["src"]
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+# scripts have docstrings after `from __future__` (E402) and long type annotations (E501)
+"scripts/**" = ["E402", "E501"]
+# ui_server.py has embedded HTML strings exceeding line length
+"src/quickthink/ui_server.py" = ["E402", "E501"]

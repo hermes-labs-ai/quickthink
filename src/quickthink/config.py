@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
 SUPPORTED_MODELS = (
     "qwen2.5:1.5b",
     "mistral:7b",

@@ -1,4 +1,4 @@
-from quickthink.config import PRESET_PROFILES, QuickThinkConfig, SUPPORTED_MODELS
+from quickthink.config import PRESET_PROFILES, SUPPORTED_MODELS, QuickThinkConfig
 
 
 def test_supported_models_are_stable() -> None:

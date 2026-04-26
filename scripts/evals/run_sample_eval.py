@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-from quickthink.config import SUPPORTED_MODELS, PRESET_PROFILES, QuickThinkConfig
+from quickthink.config import PRESET_PROFILES, SUPPORTED_MODELS, QuickThinkConfig
 from quickthink.engine import QuickThinkEngine
 
 
