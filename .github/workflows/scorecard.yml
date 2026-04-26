@@ -19,16 +19,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        uses: actions/checkout@v4
         with:
           persist-credentials: false
       - name: Run analysis
-        uses: ossf/scorecard-action@60d8f0d1f1f8c8d07ef53bd027032705d414ec28
+        uses: ossf/scorecard-action@4eaacf0543bb3f2c246792bd56e8cdeffafb205a  # v2.4.3
         with:
           results_file: scorecard-results.sarif
           results_format: sarif
           publish_results: true
       - name: Upload to code-scanning
-        uses: github/codeql-action/upload-sarif@92c65d2898f1f53cfdc910b962cecff86e7f8fcc
+        uses: github/codeql-action/upload-sarif@ce64ddcb0d8d890d2df4a9d1c04ff297367dea2a  # v3.35.2
         with:
           sarif_file: scorecard-results.sarif
