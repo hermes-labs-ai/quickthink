@@ -5,7 +5,7 @@ description = "Compressed planning scaffold for local LLMs — latency-aware rou
 readme = "README.md"
 requires-python = ">=3.9"
 authors = [
-  {name = "Rolando Bosch", email = "rbosch@lpci.ai"},
+  {name = "Rolando Bosch", email = "roli@hermes-labs.ai"},
 ]
 license = {text = "Apache-2.0"}
 keywords = [
