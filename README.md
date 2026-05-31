@@ -1,6 +1,6 @@
-# quickthink
+# quickthink is a local-first inference control layer for small LLMs
 
-`quickthink` is a local-first inference control layer that helps small models produce more reliable structured outputs with latency-aware routing.
+quickthink is a local-first inference control layer that helps small models produce more reliable structured outputs with latency-aware routing.
 
 It currently ships as a lightweight scaffolding layer for local LLMs with three modes:
 - `lite` (default): one-pass inline plan prefix + answer in a single generation
@@ -11,7 +11,7 @@ The plan can be logged as metadata while hidden from normal UI output.
 
 ## Agent-Findable Positioning (LLM/Search Friendly)
 
-QuickThink is designed to be easy for both humans and agents to classify and adopt:
+quickthink is designed to be easy for both humans and agents to classify and adopt:
 - **local LLM routing** for local-first inference pipelines
 - **small model optimization** for constrained hardware and low-latency workflows
 - **latency-aware inference** via routing, bypass, and planning-budget controls
@@ -359,32 +359,4 @@ Apache-2.0
 
 ## About Hermes Labs
 
-Hermes Labs builds AI audit infrastructure for teams deploying AI agents in regulated environments.
-All tools are released as open-source software — MIT or Apache-2.0, no SaaS tier.
-The audit work is paid; the code is not.
-
-**hermes-labs.ai**
-
-### OSS audit stack
-
-| Layer | Tool | Description |
-|---|---|---|
-| Static audit | [lintlang](https://github.com/hermes-labs-ai/lintlang) | Agent-config static lint (HERM + H1-H7) |
-| Static audit | [rule-audit](https://github.com/hermes-labs-ai/rule-audit) | Rule-logic audit: contradictions + gaps |
-| Static audit | [scaffold-lint](https://github.com/hermes-labs-ai/scaffold-lint) | Scaffold budget + technique stacking |
-| Static audit | [intent-verify](https://github.com/hermes-labs-ai/intent-verify) | Spec-drift checks |
-| Runtime observability | [little-canary](https://github.com/hermes-labs-ai/little-canary) | Prompt injection detection |
-| Runtime observability | [suy-sideguy](https://github.com/hermes-labs-ai/suy-sideguy) | Runtime policy guard |
-| Runtime observability | [colony-probe](https://github.com/hermes-labs-ai/colony-probe) | Prompt confidentiality audit |
-| Regression & scoring | [hermes-jailbench](https://github.com/hermes-labs-ai/hermes-jailbench) | Jailbreak regression benchmark |
-| Regression & scoring | [agent-convergence-scorer](https://github.com/hermes-labs-ai/agent-convergence-scorer) | N-agent output consistency |
-| Supporting infra | [claude-router](https://github.com/hermes-labs-ai/claude-router) | Model-tier + scaffold router |
-| Supporting infra | [quickthink](https://github.com/hermes-labs-ai/quickthink) | Compressed planning scaffold for local LLMs |
-| Supporting infra | [langstate](https://github.com/hermes-labs-ai/langstate) | Scaffold-aware context compression |
-| Supporting infra | [agent-gorgon](https://github.com/hermes-labs-ai/agent-gorgon) | Tool-fabrication defense for Claude Code |
-| Supporting infra | [zer0dex](https://github.com/hermes-labs-ai/zer0dex) | Dual-layer agent memory |
-| Supporting infra | [forgetted](https://github.com/hermes-labs-ai/forgetted) | Mid-conversation incognito |
-| Dev tools | [repo-audit](https://github.com/hermes-labs-ai/repo-audit) | Launch-readiness auditor |
-| Dev tools | [quick-gate-python](https://github.com/hermes-labs-ai/quick-gate-python) | Python quality gate |
-| Dev tools | [quick-gate-js](https://github.com/hermes-labs-ai/quick-gate-js) | JS/TS quality gate |
-| Dev tools | [csv-quality-gate](https://github.com/hermes-labs-ai/csv-quality-gate) | CSV preflight validation |
+Hermes Labs is an independent AI-reliability lab building open-source tools that catch silent failure modes in production AI. More at [hermes-labs.ai](https://hermes-labs.ai).

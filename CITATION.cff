@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "quickthink: local-first inference control layer for small LLMs"
+abstract: >-
+  quickthink is a local-first inference control layer that gives small,
+  on-device language models more reliable structured output by inserting a
+  compressed plan-then-answer scaffold with latency-aware routing. It runs as
+  zero-LLM-overhead middleware in front of Ollama-backed calls, with three
+  execution modes (lite, two_pass, direct), preset routing profiles, a strict
+  plan grammar, and a canonical run/judge/validate/report eval harness.
+type: software
+authors:
+  - family-names: "Bosch Rodriguez"
+    given-names: "Rolando"
+    orcid: "https://orcid.org/0009-0005-4896-1112"
+    affiliation: "Hermes Labs"
+version: "0.2.0"
+date-released: "2026-02-27"
+license: Apache-2.0
+repository-code: "https://github.com/hermes-labs-ai/quickthink"
+url: "https://github.com/hermes-labs-ai/quickthink"
+keywords:
+  - "AI reliability"
+  - "LLM reliability"
+  - "scaffold-as-state"
+  - "local-first"
+  - "structured-output reliability"
+  - "small language models"
+  - "inference routing"
+  - "Ollama middleware"
