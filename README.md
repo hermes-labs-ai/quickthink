@@ -1,6 +1,10 @@
-# quickthink is a local-first inference control layer for small LLMs
+# quickthink
 
-quickthink is a local-first inference control layer that helps small models produce more reliable structured outputs with latency-aware routing.
+[![CI](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
+
+**quickthink is a local-first CLI and Python library that wraps Ollama-backed LLM calls with a compressed plan-then-answer scaffold and latency-aware routing.** It adds a short, validated planning step before the answer for prompts that look multi-step, and routes simple prompts straight through to the model.
 
 It currently ships as a lightweight scaffolding layer for local LLMs with three modes:
 - `lite` (default): one-pass inline plan prefix + answer in a single generation
@@ -8,6 +12,8 @@ It currently ships as a lightweight scaffolding layer for local LLMs with three 
 - `direct`: no planning pass, raw prompt to model
 
 The plan can be logged as metadata while hidden from normal UI output.
+
+Part of the [Hermes Labs reliability stack](https://github.com/hermes-labs-ai). quickthink shapes the inference call; sibling tools cover other layers — for example, [lintlang](https://github.com/roli-lpci/lintlang) statically lints agent-config files, which is complementary to (not a substitute for) quickthink's runtime planning scaffold.
 
 ## Agent-Findable Positioning (LLM/Search Friendly)
 
@@ -345,11 +351,16 @@ Follow:
 - `docs/release/RELEASE_PROCESS.md`
 - `docs/release/SUPPLY_CHAIN_BASELINE_2026.md`
 
-## Caveats
+## Limitations / What it does not do
 
-- This does not guarantee better answers for every prompt.
-- Gains are model/task dependent; run evals before claiming improvements.
-- Hidden planning should remain auditable in logs for transparency.
+Grounded in how the code actually behaves:
+
+- It does not improve every answer. Whether the planning scaffold helps is model- and task-dependent; run the eval harness before claiming improvements.
+- It does not add an LLM of its own. The routing, plan grammar, and validation/repair logic are plain Python; the answer (and, in `two_pass` mode, the plan) still come from your Ollama model, so `two_pass` adds one extra model call versus `direct`.
+- It does not verify correctness. When a generated plan fails the grammar check, the engine substitutes a fixed fallback plan (`g:solve;c:constraints;s:direct_reasoning;r:verify_output`); this keeps the format valid but does not make the answer correct.
+- It only targets the three pinned models in `SUPPORTED_MODELS` (`qwen2.5:1.5b`, `mistral:7b`, `gemma3:27b`). Other models may run but are untuned.
+- It is local-first only: it talks to a local Ollama HTTP endpoint and is not a hosted API, a training framework, or an agent-orchestration platform.
+- Hidden planning is still logged for transparency; keep `--log-file` output auditable if you rely on the plan.
 
 ## License
 
