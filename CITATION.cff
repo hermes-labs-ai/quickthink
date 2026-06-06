@@ -2,12 +2,13 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 title: "quickthink: local-first inference control layer for small LLMs"
 abstract: >-
-  quickthink is a local-first inference control layer that gives small,
+  quickthink is a local-first inference control layer that aims to give small,
   on-device language models more reliable structured output by inserting a
-  compressed plan-then-answer scaffold with latency-aware routing. It runs as
-  zero-LLM-overhead middleware in front of Ollama-backed calls, with three
-  execution modes (lite, two_pass, direct), preset routing profiles, a strict
-  plan grammar, and a canonical run/judge/validate/report eval harness.
+  compressed plan-then-answer scaffold with latency-aware routing. Its routing,
+  plan-grammar, and validation logic run as plain-Python middleware (no extra
+  model of its own) in front of Ollama-backed calls, with three execution modes
+  (lite, two_pass, direct), preset routing profiles, a strict plan grammar, and
+  a canonical run/judge/validate/report eval harness.
 type: software
 authors:
   - family-names: "Bosch Rodriguez"
