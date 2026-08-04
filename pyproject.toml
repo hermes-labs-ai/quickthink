@@ -7,7 +7,7 @@ requires-python = ">=3.9"
 authors = [
   {name = "Rolando Bosch", email = "roli@hermes-labs.ai"},
 ]
-license = {text = "Apache-2.0"}
+license = "Apache-2.0"
 keywords = [
   "llm",
   "local-llm",
@@ -15,6 +15,9 @@ keywords = [
   "inference",
   "scaffold",
   "routing",
+  "llm-routing",
+  "plan-then-answer",
+  "latency-aware-routing",
   "agent",
   "structured-output",
 ]
@@ -37,6 +40,8 @@ dependencies = [
 [project.urls]
 Homepage = "https://hermes-labs.ai"
 Repository = "https://github.com/hermes-labs-ai/quickthink"
+Documentation = "https://github.com/hermes-labs-ai/quickthink#readme"
+Changelog = "https://github.com/hermes-labs-ai/quickthink/blob/main/CHANGELOG.md"
 Issues = "https://github.com/hermes-labs-ai/quickthink/issues"
 
 [project.optional-dependencies]
@@ -49,7 +54,7 @@ dev = [
 quickthink = "quickthink.cli:app"
 
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
