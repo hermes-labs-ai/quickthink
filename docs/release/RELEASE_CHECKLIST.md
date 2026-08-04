@@ -33,7 +33,7 @@ Update `CHANGELOG.md` with:
 Update the package version in `pyproject.toml`:
 - `[project].version = "x.y.z"`
 
-## 5) Tag + release notes
+## 5) Tag + trusted PyPI publishing
 Generate draft notes:
 
 ```bash
@@ -50,7 +50,19 @@ git push origin <branch>
 git push origin v<x.y.z>
 ```
 
-Create a GitHub Release for tag `v<x.y.z>` and paste finalized release notes.
+Before pushing the tag, configure the PyPI trusted publisher with:
+- owner: `hermes-labs-ai`
+- repository: `quickthink`
+- workflow: `publish.yml`
+- environment: `pypi`
+
+The tag must exactly match the package version (`v<x.y.z>`). The workflow builds and checks
+the distributions before a separate `pypi` environment job publishes them through OIDC. Do
+not use a PyPI token or run `twine upload`. Because `v0.2.0` predates this workflow, first
+PyPI publication must use a new version and matching tag (for example, `v0.2.1`).
+
+After the package publish succeeds, create a GitHub Release for tag `v<x.y.z>` and paste
+the finalized release notes.
 
 Recommended release publication order:
 1. Create release as **draft**.

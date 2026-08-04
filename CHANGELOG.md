@@ -6,6 +6,10 @@ Format follows Keep a Changelog principles and semantic versioning.
 
 ## [Unreleased]
 
+### Changed
+- Document the copyable, tagged-source install path to use before the first PyPI release.
+- Prepare tag-bound PyPI trusted publishing; no package has been uploaded.
+
 ## [0.2.0] - 2026-02-27
 ### Added
 - `direct` mode: no planning pass, raw prompt to model.

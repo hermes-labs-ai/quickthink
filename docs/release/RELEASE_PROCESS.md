@@ -29,16 +29,28 @@ This checklist is the source-of-truth execution order for release day.
 5. Update `pyproject.toml` version.
 6. Update `CHANGELOG.md`.
 7. Commit with message: `release: v<x.y.z>`.
-8. Tag and push:
+8. Merge the release commit only after its hosted checks pass.
+9. For a PyPI release, configure the PyPI trusted publisher once with this exact tuple:
+   - owner: `hermes-labs-ai`
+   - repository: `quickthink`
+   - workflow: `publish.yml`
+   - environment: `pypi`
+10. Tag and push the merged commit:
    - `git tag v<x.y.z>`
-   - `git push origin <branch> --tags`
+   - `git push origin v<x.y.z>`
+
+The tag workflow checks that `v<x.y.z>` exactly matches `[project].version`, builds and
+checks distributions in a separate job, then publishes the artifact through PyPI OIDC.
+It uses no PyPI API token. The existing `v0.2.0` tag predates this workflow, so the first
+PyPI release must use a new version and matching tag (for example, `v0.2.1`).
 
 ## Packaging
 Build/check package locally:
 - `python -m pip install --upgrade build`
 - `python -m build`
 
-Optional publish (when ready):
+Check the distributions locally:
 - `python -m pip install --upgrade twine`
 - `python -m twine check dist/*`
-- `python -m twine upload dist/*`
+
+Do not run `twine upload`; publishing is performed only by the trusted-publisher workflow.
