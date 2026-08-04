@@ -6,9 +6,15 @@ Format follows Keep a Changelog principles and semantic versioning.
 
 ## [Unreleased]
 
+## [0.2.1] - 2026-08-04
+
+### Added
+- `quickthink --version` reports the installed package version.
+
 ### Changed
-- Document the copyable, tagged-source install path to use before the first PyPI release.
-- Prepare tag-bound PyPI trusted publishing; no package has been uploaded.
+- Prepare the first PyPI publication through a tag-bound GitHub Actions trusted-publisher workflow. The workflow verifies that the tag and package version match, builds distributions, and checks them before the protected PyPI environment can publish.
+- Make source installation before publication and package installation after publication explicit in the quickstart.
+- Synchronize package, citation, and Zenodo release metadata for `0.2.1`.
 
 ## [0.2.0] - 2026-02-27
 ### Added
