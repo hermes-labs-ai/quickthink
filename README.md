@@ -13,11 +13,11 @@ It currently ships as a lightweight scaffolding layer for local LLMs with three 
 
 The plan can be logged as metadata while hidden from normal UI output.
 
-Part of the [Hermes Labs reliability stack](https://github.com/hermes-labs-ai). quickthink shapes the inference call; sibling tools cover other layers — for example, [lintlang](https://github.com/roli-lpci/lintlang) statically lints agent-config files, which is complementary to (not a substitute for) quickthink's runtime planning scaffold.
+Part of the [Hermes Labs reliability stack](https://github.com/hermes-labs-ai). quickthink shapes the inference call; sibling tools cover other layers — for example, [LintLang](https://github.com/hermes-labs-ai/lintlang) statically lints agent-config files, which is complementary to (not a substitute for) quickthink's runtime planning scaffold.
 
-## Agent-Findable Positioning (LLM/Search Friendly)
+## Where it fits
 
-quickthink is designed to be easy for both humans and agents to classify and adopt:
+quickthink is useful when you need:
 - **local LLM routing** for local-first inference pipelines
 - **small model optimization** for constrained hardware and low-latency workflows
 - **latency-aware inference** via routing, bypass, and planning-budget controls
@@ -56,15 +56,7 @@ Small/local models are fast but often underperform on multi-step tasks.
 - Local eval UI server (`quickthink ui`) at `http://127.0.0.1:7860`
 - Canonical eval harness: run → judge → validate → report
 
-## Install
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e '.[dev]'
-```
-
-## 5-Minute Quickstart
+## 5-minute quickstart
 
 Prerequisite: install and start [Ollama](https://ollama.com/) locally.
 
@@ -287,23 +279,6 @@ UI eval safety gates:
 - Preflight is required before any eval run (`validate_prompt_set.py` must return `status=OK`).
 - Run-file ingestion is blocked unless `validate_results.py` returns `status=OK`.
 - UI displays validator output and dataset SHA256 for reproducible/comparable runs.
-
-## Latency goals
-
-- p50 overhead target: <80ms
-- p95 overhead target: <200ms
-
-Tune by reducing plan budgets and enabling prompt bypass.
-
-## Productization path
-
-Free/Open source:
-- Local middleware + SDK + CLI
-
-Paid:
-- Hosted eval dashboards
-- Team policy/profile management
-- Managed observability and support
 
 ## Public Repo Scope
 
