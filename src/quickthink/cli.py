@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from datetime import datetime, timezone
+from importlib.metadata import version as package_version
 from pathlib import Path
 from typing import Optional
 
@@ -12,6 +13,25 @@ from .engine import QuickThinkEngine
 from .ui_server import serve_ui
 
 app = typer.Typer(help="Compressed planning scaffold for local LLMs")
+
+
+def _version_callback(value: bool) -> None:
+    if value:
+        typer.echo(package_version("quickthink"))
+        raise typer.Exit()
+
+
+@app.callback()
+def main(
+    version: bool = typer.Option(
+        False,
+        "--version",
+        callback=_version_callback,
+        is_eager=True,
+        help="Show the installed quickthink version and exit.",
+    ),
+) -> None:
+    """Compressed planning scaffold for local LLMs."""
 
 
 @app.command()
