@@ -61,8 +61,8 @@ Small/local models are fast but often underperform on multi-step tasks.
 Prerequisite: install and start [Ollama](https://ollama.com/) locally.
 
 ```bash
-# 1) Before the first PyPI publication, install the current source
-python -m pip install "quickthink @ git+https://github.com/hermes-labs-ai/quickthink.git"
+# 1) Install the released package
+python -m pip install "quickthink==0.2.1"
 
 # 2) Pull one supported model
 ollama pull qwen2.5:1.5b
@@ -72,12 +72,6 @@ quickthink ask "Give me a 3-step plan to learn SQL basics" --model qwen2.5:1.5b
 ```
 
 If this command works, your local setup is ready.
-
-After `v0.2.1` has been published to PyPI, install the release instead:
-
-```bash
-python -m pip install "quickthink==0.2.1"
-```
 
 For development, clone the repository and install the editable development extras:
 
