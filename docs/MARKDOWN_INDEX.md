@@ -28,14 +28,9 @@ Single entrypoint for important Markdown files in this repository.
 ## Active Research (High Priority)
 - `docs/research/RESEARCH_HYGIENE_PROTOCOL.md` (anti-drift protocol)
 - `docs/research/R_AND_D_LEDGER.md`
-- `docs/research/GTM_TIER_DECISION_MEMO_2026-02-26.md`
-- `docs/research/MASTER_PROJECT_STATUS_AND_COMMERCIALIZATION_2026-02-26.md`
 - `docs/research/gate_decision_spec_2026-02-25.md`
 - `docs/research/model_lane_strategy_2026-02-25.md`
 - `docs/research/integration_hardening_report_2026-02-25.md`
-- `docs/research/QUICKTHINK_OWNER_NOTEBOOK_AND_GTM_2026-02-26.md`
-- `docs/research/QUICKTHINK_DELOITTE_STYLE_STRATEGY_BOOK_2026-02-26.md`
-- `docs/research/QUICKTHINK_PRODUCT_INITIATIVE_EXECUTIVE_REPORT_2026-02-26.md`
 - `docs/research/codex/philosophy/philo_researcher_1_notes.md`
 - `docs/research/instruction_lane_iterative_loop_2026-02-27.md`
 - `docs/research/THREAD_RECOVERY_MAP_2026-02-27.md`
