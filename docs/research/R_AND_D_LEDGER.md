@@ -42,27 +42,6 @@ Maintain a single, date-ordered log of research direction, decisions, and eviden
 - Next experiments:
   - Weak-model litmus test on short list under selected objective tier.
 
-### Entry 2026-02-26T18:20:00Z
-- Owner: Codex
-- Session framing: market-depth decision memo for GTM tier selection
-- Objective tier (`no-loss-first` | `balanced` | `max-gain`): recommendation = `balanced` default + `no-loss-first` package option
-- Inputs:
-  - `docs/research/GTM_TIER_DECISION_MEMO_2026-02-26.md`
-  - `docs/research/DECISION_GATES.md`
-  - `experiments-local/philo_assumption_challenge_2026-02-25/run_qwen_n8_full/summary.md`
-  - `experiments-local/philo_assumption_challenge_2026-02-25/run_mistral_n5_full/summary.md`
-- Runs added:
-  - none (synthesis session)
-- Observed:
-  - External market signals indicate ROI + trust/governance discipline in enterprise buying.
-  - Internal evidence shows uplift with lane-specific regression risk.
-- Interpreted:
-  - `balanced` is the most scalable default posture; `no-loss-first` should be a stricter option.
-- Decision impact:
-  - GTM baseline can now be set without waiting for perfect no-regression across all lanes.
-- Next experiments:
-  - Weak-model litmus tests on short-listed variants under `balanced` gate.
-
 ### Entry 2026-02-26T19:05:00Z
 - Owner: Codex
 - Session framing: 4-model expansion pass (llama/gemma additions) on top-3 shortlist
