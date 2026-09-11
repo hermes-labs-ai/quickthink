@@ -6,6 +6,8 @@ Format follows Keep a Changelog principles and semantic versioning.
 
 ## [Unreleased]
 
+## [0.2.2] - 2026-09-11
+
 ### Added
 - `quickthink ask --dry-run` resolves routing and prints the exact prompt(s) that would be sent to Ollama without contacting it, so routing can be inspected offline.
 - `QuickThinkEngine.preview()` exposes the same network-free routing preview to library users.
