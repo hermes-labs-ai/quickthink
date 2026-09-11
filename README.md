@@ -162,6 +162,18 @@ Show routing diagnostics:
 quickthink ask "Design a robust parser with tradeoffs and a JSON output schema" --show-route --show-plan
 ```
 
+Skip planning entirely (`direct` mode):
+
+```bash
+quickthink ask "What is the capital of France?" --mode direct
+```
+
+Inspect routing and the exact prompt(s) without calling Ollama (`--dry-run` works offline):
+
+```bash
+quickthink ask "Design a retry strategy for a flaky payments API: compare exponential backoff versus a circuit breaker, list the tradeoffs, and return a JSON schema for the config" --mode two_pass --dry-run
+```
+
 Optional continuity hint (tiny, off by default):
 
 ```bash
@@ -314,8 +326,9 @@ Test:
 PYTHONPATH=src .venv/bin/pytest -q
 ```
 
-Lint (basic syntax/import sanity):
+Lint (same commands as CI):
 ```bash
+.venv/bin/ruff check src/ tests/ scripts/
 python -m compileall src tests scripts
 ```
 

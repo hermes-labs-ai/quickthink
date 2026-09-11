@@ -33,23 +33,87 @@ class QuickThinkResult:
         return self.plan_latency_ms + self.answer_latency_ms
 
 
+@dataclass
+class QuickThinkPreview:
+    """Routing decision plus the prompt(s) that would be sent, produced without a model call."""
+
+    mode: str
+    bypassed: bool
+    route_score: int
+    selected_plan_budget: int
+    prompts: list[tuple[str, str]]
+    model_calls_min: int
+    model_calls_max: int
+
+    @property
+    def model_calls(self) -> str:
+        """Human-readable call count, e.g. ``"1"`` or ``"2-3"`` when a plan repair call may occur."""
+        if self.model_calls_min == self.model_calls_max:
+            return str(self.model_calls_min)
+        return f"{self.model_calls_min}-{self.model_calls_max}"
+
+
 class QuickThinkEngine:
     def __init__(self, config: QuickThinkConfig) -> None:
         self.config = config
         self.client = OllamaClient(config.ollama_url, timeout_s=config.request_timeout_s)
 
-    def run(self, prompt: str) -> QuickThinkResult:
+    def _resolve_route(self, prompt: str) -> tuple[bool, int, int]:
+        """Return (bypass, route_score, selected_budget) without contacting the model."""
         if self.config.lane_policy == "strict_safe" and infer_task_class(prompt) == "strict_format":
-            return self._run_direct(prompt=prompt, route_score=-1, selected_budget=self.config.min_plan_budget_tokens)
+            return True, -1, self.config.min_plan_budget_tokens
+        return should_bypass(prompt, self.config)
 
-        bypass, route_score, selected_budget = should_bypass(prompt, self.config)
-        if bypass:
+    def preview(self, prompt: str) -> QuickThinkPreview:
+        """Resolve routing and build the exact prompt(s) that ``run`` would send, without calling Ollama."""
+        bypass, route_score, selected_budget = self._resolve_route(prompt)
+        if bypass or self.config.mode == "direct":
+            return QuickThinkPreview(
+                mode=self.config.mode,
+                bypassed=True,
+                route_score=route_score,
+                selected_plan_budget=selected_budget,
+                prompts=[("answer", prompt)],
+                model_calls_min=1,
+                model_calls_max=1,
+            )
+        if self.config.mode == "two_pass":
+            # The answer prompt embeds the plan returned by the first call, so it is shown as a
+            # template; an invalid first plan triggers one extra repair call before the answer.
+            prompts = [
+                ("plan", make_plan_prompt(prompt, selected_budget)),
+                ("answer-template", make_answer_prompt(prompt, "<plan from the first call>")),
+            ]
+            calls_min, calls_max = 2, 3
+        else:
+            prompts = [
+                (
+                    "plan+answer",
+                    make_inline_plan_answer_prompt(
+                        prompt,
+                        selected_budget,
+                        continuity_hint=self.config.continuity_hint,
+                        scaffold_rules=self.config.scaffold_rules,
+                    ),
+                )
+            ]
+            calls_min, calls_max = 1, 1
+        return QuickThinkPreview(
+            mode=self.config.mode,
+            bypassed=False,
+            route_score=route_score,
+            selected_plan_budget=selected_budget,
+            prompts=prompts,
+            model_calls_min=calls_min,
+            model_calls_max=calls_max,
+        )
+
+    def run(self, prompt: str) -> QuickThinkResult:
+        bypass, route_score, selected_budget = self._resolve_route(prompt)
+        if bypass or self.config.mode == "direct":
             return self._run_direct(prompt=prompt, route_score=route_score, selected_budget=selected_budget)
-
         if self.config.mode == "two_pass":
             return self._run_two_pass(prompt, route_score, selected_budget)
-        if self.config.mode == "direct":
-            return self._run_direct(prompt=prompt, route_score=route_score, selected_budget=selected_budget)
         return self._run_lite(prompt, route_score, selected_budget)
 
     def _run_direct(self, prompt: str, route_score: int, selected_budget: int) -> QuickThinkResult:

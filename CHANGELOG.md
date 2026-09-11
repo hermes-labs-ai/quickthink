@@ -6,6 +6,19 @@ Format follows Keep a Changelog principles and semantic versioning.
 
 ## [Unreleased]
 
+### Added
+- `quickthink ask --dry-run` resolves routing and prints the exact prompt(s) that would be sent to Ollama without contacting it, so routing can be inspected offline.
+- `QuickThinkEngine.preview()` exposes the same network-free routing preview to library users.
+- CI runs `ruff check` and tests Python 3.13.
+
+### Changed
+- `pydantic` was declared as a runtime dependency but never imported; it is no longer installed with the package.
+
+### Fixed
+- `quickthink ask --mode direct` is accepted by the CLI (the engine already supported it; the CLI only allowed `lite` and `two_pass`).
+- `quickthink bench` measures its `direct` column with the real `direct` mode instead of a `lite` configuration forced to bypass, and disables short-prompt/adaptive bypass for the `lite` and `two_pass` columns so each column measures the mode it is labelled with.
+- `quickthink ask` and `quickthink bench` exit with code 2 and a short hint when Ollama is unreachable, instead of an `httpx` traceback.
+
 ## [0.2.1] - 2026-08-04
 
 ### Added
