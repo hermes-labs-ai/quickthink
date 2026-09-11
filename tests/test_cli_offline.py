@@ -49,9 +49,10 @@ def test_dry_run_two_pass_lists_both_calls() -> None:
         app, ["ask", prompt, "--mode", "two_pass", "--ollama-url", UNREACHABLE, "--dry-run"]
     )
     assert result.exit_code == 0, result.output
-    assert "model_calls=2" in result.output
+    assert "model_calls=2-3" in result.output
     assert "[prompt:plan]" in result.output
-    assert "[prompt:answer]" in result.output
+    assert "[prompt:answer-template]" in result.output
+    assert "<plan from the first call>" in result.output
 
 
 def test_ask_invalid_mode_rejected() -> None:
@@ -90,3 +91,28 @@ def test_engine_preview_matches_run_routing(monkeypatch) -> None:
     assert preview.route_score == result.route_score
     assert preview.selected_plan_budget == result.selected_plan_budget
     assert [text for _, text in preview.prompts] == sent
+
+
+def test_bench_forces_planned_modes(monkeypatch) -> None:
+    """A short prompt must still be measured under lite and two_pass, not bypassed to direct."""
+    from quickthink import cli
+
+    seen: list[tuple[str, bool]] = []
+
+    class FakeEngine:
+        def __init__(self, config: QuickThinkConfig) -> None:
+            self.config = config
+
+        def run(self, prompt: str):  # type: ignore[no-untyped-def]
+            real = QuickThinkEngine(self.config).preview(prompt)
+            seen.append((self.config.mode, real.bypassed))
+
+            class R:
+                total_latency_ms = 1.0
+
+            return R()
+
+    monkeypatch.setattr(cli, "QuickThinkEngine", FakeEngine)
+    result = CliRunner().invoke(app, ["bench", "what is 2 + 2?", "--runs", "1"])
+    assert result.exit_code == 0, result.output
+    assert seen == [("lite", False), ("two_pass", False), ("direct", True)]

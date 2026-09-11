@@ -42,6 +42,15 @@ class QuickThinkPreview:
     route_score: int
     selected_plan_budget: int
     prompts: list[tuple[str, str]]
+    model_calls_min: int
+    model_calls_max: int
+
+    @property
+    def model_calls(self) -> str:
+        """Human-readable call count, e.g. ``"1"`` or ``"2-3"`` when a plan repair call may occur."""
+        if self.model_calls_min == self.model_calls_max:
+            return str(self.model_calls_min)
+        return f"{self.model_calls_min}-{self.model_calls_max}"
 
 
 class QuickThinkEngine:
@@ -65,12 +74,17 @@ class QuickThinkEngine:
                 route_score=route_score,
                 selected_plan_budget=selected_budget,
                 prompts=[("answer", prompt)],
+                model_calls_min=1,
+                model_calls_max=1,
             )
         if self.config.mode == "two_pass":
+            # The answer prompt embeds the plan returned by the first call, so it is shown as a
+            # template; an invalid first plan triggers one extra repair call before the answer.
             prompts = [
                 ("plan", make_plan_prompt(prompt, selected_budget)),
-                ("answer", make_answer_prompt(prompt, "<plan from the first call>")),
+                ("answer-template", make_answer_prompt(prompt, "<plan from the first call>")),
             ]
+            calls_min, calls_max = 2, 3
         else:
             prompts = [
                 (
@@ -83,12 +97,15 @@ class QuickThinkEngine:
                     ),
                 )
             ]
+            calls_min, calls_max = 1, 1
         return QuickThinkPreview(
             mode=self.config.mode,
             bypassed=False,
             route_score=route_score,
             selected_plan_budget=selected_budget,
             prompts=prompts,
+            model_calls_min=calls_min,
+            model_calls_max=calls_max,
         )
 
     def run(self, prompt: str) -> QuickThinkResult:

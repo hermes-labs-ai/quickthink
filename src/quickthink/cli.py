@@ -92,7 +92,7 @@ def ask(
         preview = engine.preview(prompt)
         typer.echo(
             f"[route] mode={preview.mode} bypassed={preview.bypassed} score={preview.route_score} "
-            f"plan_budget={preview.selected_plan_budget} model_calls={len(preview.prompts)} model={model}"
+            f"plan_budget={preview.selected_plan_budget} model_calls={preview.model_calls} model={model}"
         )
         for stage, text in preview.prompts:
             typer.echo(f"[prompt:{stage}]")
@@ -164,6 +164,11 @@ def _bench_modes(
         config = QuickThinkConfig.with_model_profile(model=model, ollama_url=ollama_url)
         config.apply_preset(preset)
         config.mode = mode
+        # Benchmark the configured mode itself: without this, prompts below the preset's
+        # bypass threshold or complexity score would silently measure the direct path under
+        # a lite/two_pass label. `strict_safe` keeps its own strict-format bypass.
+        config.bypass_short_prompts = False
+        config.adaptive_routing = False
         config.lane_policy = lane_policy
         engine = QuickThinkEngine(config)
         for _ in range(runs):

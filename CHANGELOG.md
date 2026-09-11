@@ -16,7 +16,7 @@ Format follows Keep a Changelog principles and semantic versioning.
 
 ### Fixed
 - `quickthink ask --mode direct` is accepted by the CLI (the engine already supported it; the CLI only allowed `lite` and `two_pass`).
-- `quickthink bench` measures its `direct` column with the real `direct` mode instead of a `lite` configuration forced to bypass.
+- `quickthink bench` measures its `direct` column with the real `direct` mode instead of a `lite` configuration forced to bypass, and disables short-prompt/adaptive bypass for the `lite` and `two_pass` columns so each column measures the mode it is labelled with.
 - `quickthink ask` and `quickthink bench` exit with code 2 and a short hint when Ollama is unreachable, instead of an `httpx` traceback.
 
 ## [0.2.1] - 2026-08-04
