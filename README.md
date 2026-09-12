@@ -62,7 +62,7 @@ Prerequisite: install and start [Ollama](https://ollama.com/) locally.
 
 ```bash
 # 1) Install the released package
-python -m pip install "quickthink==0.2.1"
+python -m pip install "quickthink==0.2.2"
 
 # 2) Pull one supported model
 ollama pull qwen2.5:1.5b

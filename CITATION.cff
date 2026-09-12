@@ -15,8 +15,8 @@ authors:
     given-names: "Rolando"
     orcid: "https://orcid.org/0009-0005-4896-1112"
     affiliation: "Hermes Labs"
-version: "0.2.1"
-date-released: "2026-08-04"
+version: "0.2.2"
+date-released: "2026-09-11"
 license: Apache-2.0
 repository-code: "https://github.com/hermes-labs-ai/quickthink"
 url: "https://github.com/hermes-labs-ai/quickthink"
