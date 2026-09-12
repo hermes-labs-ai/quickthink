@@ -22,6 +22,22 @@ Expected:
 - Demo completes without fatal errors.
 - Eval/report artifacts are generated.
 
+### Local continuation block (Ollama-dependent steps in one place)
+
+The quickstart smoke test, the compatibility snapshot, and the release-notes
+draft all need a local Ollama and are not run by CI. Run them together, in
+order, for the version under release (example below is for `0.2.2`):
+
+```bash
+bash scripts/demo/quickstart.sh
+python3 scripts/evals/compat_matrix_snapshot.py
+python3 scripts/release/create_release_notes.py --version 0.2.2
+```
+
+Commit the regenerated `docs/release/RELEASE_NOTES_DRAFT.md` and any updated
+`docs/compatibility/snapshots/*.json` / `docs/compatibility_matrix.md` this
+produces before merging the release PR.
+
 ## 3) Changelog update
 Update `CHANGELOG.md` with:
 - version heading (`x.y.z`)

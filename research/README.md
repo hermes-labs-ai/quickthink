@@ -5,7 +5,7 @@ quickthink was the starting point for all Hermes Labs scaffold research. These a
 ## History
 quickthink → scaffold experiments (Studies 001-011) → scaffold independence thesis → prompt optimizer
 
-The full experimental archive lives in [scaffold-independence](https://github.com/hermes-labs-ai/scaffold-independence). This folder contains copies of the studies that specifically tested S1 (quickthink).
+The full experimental archive is not published. This folder contains copies of the studies that specifically tested S1 (quickthink).
 
 ## Studies
 
