@@ -1,0 +1,17 @@
+{
+  "@context": "https://w3id.org/codemeta/3.1",
+  "@type": "SoftwareSourceCode",
+  "name": "quickthink",
+  "description": "Local-first inference control layer that improves structured-output reliability for small, on-device LLMs with a compressed plan-then-answer scaffold and latency-aware routing in front of Ollama-backed calls.",
+  "codeRepository": "https://github.com/hermes-labs-ai/quickthink",
+  "version": "0.2.2",
+  "license": "https://spdx.org/licenses/Apache-2.0",
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python >=3.9",
+  "identifier": [
+    "https://pypi.org/project/quickthink/0.2.2/"
+  ],
+  "author": [{"@type": "Person", "givenName": "Rolando", "familyName": "Bosch Rodriguez", "identifier": "https://orcid.org/0009-0005-4896-1112"}],
+  "url": "https://pypi.org/project/quickthink/0.2.2/",
+  "keywords": ["AI reliability", "LLM reliability", "scaffold-as-state", "local-first", "structured-output reliability", "small language models", "inference routing", "Ollama middleware"]
+}
