@@ -352,6 +352,14 @@ Grounded in how the code actually behaves:
 - It is local-first only: it talks to a local Ollama HTTP endpoint and is not a hosted API, a training framework, or an agent-orchestration platform.
 - Hidden planning is still logged for transparency; keep `--log-file` output auditable if you rely on the plan.
 
+## Part of the Hermes Labs toolkit — see also:
+- [lintlang](https://github.com/hermes-labs-ai/lintlang) — Static analysis for AI agent tool descriptions and workflows.
+- [little-canary](https://github.com/hermes-labs-ai/little-canary) — Prompt injection detection through a powerless sacrificial model.
+- [fidelis](https://github.com/hermes-labs-ai/fidelis) — Semantic memory for long-running agents with local retrieval.
+- [hermeneutic](https://github.com/hermes-labs-ai/hermeneutic) — Detect recurring AI drift from correction history.
+- [zer0dex](https://github.com/hermes-labs-ai/zer0dex) — Local agent recall without burdening the context window.
+- [claude-plugins marketplace](https://github.com/hermes-labs-ai/claude-plugins) — Plugin system for Claude Code extensibility.
+
 ## License
 
 Apache-2.0
