@@ -8,7 +8,7 @@ Applies to all agents running local eval/variant experiments in this repo.
 
 ## Experiment Locking
 Must:
-1. Announce run intent in `/Users/rolibosch/Documents/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md` before launch.
+1. Announce run intent in `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md` before launch.
 2. Include model(s), prompt set, out_dir, N, and expected duration.
 3. Check active eval processes (`run_variant_gate.py`, `run_suite.py`) before launch.
 4. If another run uses overlapping model resources, either queue or explicitly mark as non-comparable.
@@ -38,7 +38,7 @@ All major updates should reference CIVP chapter:
 
 ## Shared Notes Requirement
 After each meaningful run, append timestamped entry to:
-- `/Users/rolibosch/Documents/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
+- `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
 
 Entry must include:
 - Purpose

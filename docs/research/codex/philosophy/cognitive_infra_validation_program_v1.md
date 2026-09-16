@@ -52,7 +52,7 @@ Goal:
 - Run artifacts (`run_results.jsonl`, `judged_results.jsonl`, `summary.json`, `summary.md`)
 - Per-group gate report with wins/losses/ties and p-values
 - Ablation report with ranking and retention recommendation
-- Shared log entries in `/Users/rolibosch/Documents/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
+- Shared log entries in `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
 
 ## Commands
 Primary confirmation command template:

@@ -14,7 +14,7 @@ Reconstruct a clean, decision-grade project context after lost chat threads, and
 - `docs/research/instruction_lane_iterative_loop_2026-02-27.md`
 - `experiments-local/registry/INDEX.md`
 - `experiments-local/registry/run_philo_assumption_challenge__run_*.md` (recent instruction-lane traces)
-- `/Users/rolibosch/Documents/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
+- `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
 
 ## Outputs
 - Canonical restart state for research orchestration.
@@ -23,8 +23,8 @@ Reconstruct a clean, decision-grade project context after lost chat threads, and
 
 ## Recovered Ground Truth
 1. Repo/root:
-- Canonical repo root is `/Users/rolibosch/Documents/QuickThink`.
-- `/Users/rolibosch/Documents/New project` is an alias symlink.
+- Canonical repo root is `<local-workspace>/QuickThink`.
+- `<local-workspace>/New project` is an alias symlink.
 
 2. Current strategic posture:
 - Keep model-lane-specific defaults; no universal scaffold default.

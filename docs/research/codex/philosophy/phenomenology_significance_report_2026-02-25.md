@@ -8,13 +8,13 @@ Summarize significance-focused follow-up experiments on conceptually motivated s
 
 ## Inputs
 - Baseline broad concept run:
-  - `/Users/rolibosch/Documents/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_n5_full_01/summary.json`
+  - `<local-workspace>/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_n5_full_01/summary.json`
 - Follow-up significance run (top 3 variants):
-  - `/Users/rolibosch/Documents/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/summary.json`
+  - `<local-workspace>/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/summary.json`
 - Artifacts:
-  - `/Users/rolibosch/Documents/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/run_results.jsonl`
-  - `/Users/rolibosch/Documents/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/judged_results.jsonl`
-  - `/Users/rolibosch/Documents/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/lift_cases.jsonl`
+  - `<local-workspace>/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/run_results.jsonl`
+  - `<local-workspace>/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/judged_results.jsonl`
+  - `<local-workspace>/QuickThink/docs/research/codex/experiments/phenomenology_run_2026-02-25_top3_n15/lift_cases.jsonl`
 
 ## Method
 - Canonical runner: `scripts/eval_harness/run_variant_gate.py`
