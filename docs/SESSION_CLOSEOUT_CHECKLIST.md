@@ -18,7 +18,7 @@ Prevent undocumented progress by enforcing minimum research documentation update
 - `experiments-local/_review/ARCHIVE_CANDIDATES.md` updated if needed
 
 5. Shared live notes updated when meaningful new runs happened:
-- `/Users/rolibosch/Documents/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
+- `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
 
 ## Closeout statement template
 - Objective tier used:

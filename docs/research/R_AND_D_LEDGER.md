@@ -110,7 +110,7 @@ Maintain a single, date-ordered log of research direction, decisions, and eviden
 - Objective tier (`no-loss-first` | `balanced` | `max-gain`): `balanced` (evaluation only)
 - Inputs:
   - `experiments-local/philo_assumption_challenge_2026-02-25/run_qwen25_14b_n5_top3/summary.md`
-  - `/Users/rolibosch/Documents/Claude Code/haiku45-baseline-2026-02-26.json`
+  - `<local-workspace>/Claude Code/haiku45-baseline-2026-02-26.json`
 - Runs added:
   - `run_qwen25_14b_n5_top3`
   - `anthropic_baseline/haiku45_no_canary_2026-02-26`
@@ -229,7 +229,7 @@ Maintain a single, date-ordered log of research direction, decisions, and eviden
   - `docs/research/MODEL_DEFAULTS_AND_GUARDRAILS_2026-02-26.md`
   - `docs/research/instruction_lane_iterative_loop_2026-02-27.md`
   - `experiments-local/registry/INDEX.md`
-  - `/Users/rolibosch/Documents/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
+  - `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
 - Runs added:
   - `research_orchestration/session_recovery_2026-02-27` (reference synthesis trace)
 - Observed:
