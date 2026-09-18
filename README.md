@@ -3,6 +3,7 @@
 [![CI](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
+[![PyPI](https://img.shields.io/pypi/v/quickthink.svg)](https://pypi.org/project/quickthink/)
 
 **quickthink is a local-first CLI and Python library that wraps Ollama-backed LLM calls with a compressed plan-then-answer scaffold and latency-aware routing.** It adds a short, validated planning step before the answer for prompts that look multi-step, and routes simple prompts straight through to the model.
 
