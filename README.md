@@ -83,14 +83,14 @@ python -m pip install -e '.[dev]'
 
 ## Documentation Map
 
-- Docs index: `docs/README.md`
-- First-time setup: `docs/GETTING_STARTED.md`
-- Common failures and fixes: `docs/TROUBLESHOOTING.md`
-- Known limitations: `docs/KNOWN_LIMITATIONS.md`
-- Quick demo script: `docs/demo/QUICK_DEMO.md`
-- OSS readiness scorecard: `docs/release/OSS_READINESS_SCORECARD_2026-02-25.md`
-- OSS standards alignment (with external references): `docs/release/OSS_STANDARDS_ALIGNMENT_2026.md`
-- Agent operating notes: `AGENTS.md`
+- Docs index: [`docs/README.md`](docs/README.md)
+- First-time setup: [`docs/GETTING_STARTED.md`](docs/GETTING_STARTED.md)
+- Common failures and fixes: [`docs/TROUBLESHOOTING.md`](docs/TROUBLESHOOTING.md)
+- Known limitations: [`docs/KNOWN_LIMITATIONS.md`](docs/KNOWN_LIMITATIONS.md)
+- Quick demo script: [`docs/demo/QUICK_DEMO.md`](docs/demo/QUICK_DEMO.md)
+- OSS readiness scorecard: [`docs/release/OSS_READINESS_SCORECARD_2026-02-25.md`](docs/release/OSS_READINESS_SCORECARD_2026-02-25.md)
+- OSS standards alignment (with external references): [`docs/release/OSS_STANDARDS_ALIGNMENT_2026.md`](docs/release/OSS_STANDARDS_ALIGNMENT_2026.md)
+- Agent operating notes: [`AGENTS.md`](AGENTS.md)
 
 ## Repository Layout
 
