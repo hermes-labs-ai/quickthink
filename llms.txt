@@ -28,11 +28,21 @@ Preset routing profiles (`fast`, `balanced`, `strict`) and lane policies
 
 ## Install
 
-```
-pip install -e '.[dev]'
+**Primary route (released package):**
+
+```bash
+python -m pip install "quickthink==0.2.2"
 ```
 
-Install from source (not yet published to PyPI). Requires Ollama running locally: https://ollama.com/
+Requires Ollama running locally: https://ollama.com/
+
+**Contributor route (development):**
+
+```bash
+git clone https://github.com/hermes-labs-ai/quickthink.git
+cd quickthink
+pip install -e '.[dev]'
+```
 
 ## Key commands
 
