@@ -7,6 +7,10 @@
 
 **quickthink is a local-first CLI and Python library that wraps Ollama-backed LLM calls with a compressed plan-then-answer scaffold and latency-aware routing.** It adds a short, validated planning step before the answer for prompts that look multi-step, and routes simple prompts straight through to the model.
 
+quickthink is developed by [Hermes Labs](https://hermes-labs.ai).
+
+Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production.
+
 It currently ships as a lightweight scaffolding layer for local LLMs with three modes:
 - `lite` (default): one-pass inline plan prefix + answer in a single generation
 - `two_pass`: separate plan call then answer call
@@ -14,7 +18,7 @@ It currently ships as a lightweight scaffolding layer for local LLMs with three 
 
 The plan can be logged as metadata while hidden from normal UI output.
 
-Part of the [Hermes Labs reliability stack](https://github.com/hermes-labs-ai). quickthink shapes the inference call; sibling tools cover other layers — for example, [LintLang](https://github.com/hermes-labs-ai/lintlang) statically lints agent-config files, which is complementary to (not a substitute for) quickthink's runtime planning scaffold.
+quickthink shapes the inference call; sibling tools cover other layers — for example, [LintLang](https://github.com/hermes-labs-ai/lintlang) statically lints agent-config files, which is complementary to (not a substitute for) quickthink's runtime planning scaffold.
 
 ## Where it fits
 
@@ -353,7 +357,7 @@ Grounded in how the code actually behaves:
 - It is local-first only: it talks to a local Ollama HTTP endpoint and is not a hosted API, a training framework, or an agent-orchestration platform.
 - Hidden planning is still logged for transparency; keep `--log-file` output auditable if you rely on the plan.
 
-## Part of the Hermes Labs toolkit — see also:
+## More from Hermes Labs
 - [lintlang](https://github.com/hermes-labs-ai/lintlang) — Static analysis for AI agent tool descriptions and workflows.
 - [little-canary](https://github.com/hermes-labs-ai/little-canary) — Prompt injection detection through a powerless sacrificial model.
 - [fidelis](https://github.com/hermes-labs-ai/fidelis) — Semantic memory for long-running agents with local retrieval.
@@ -361,14 +365,8 @@ Grounded in how the code actually behaves:
 - [zer0dex](https://github.com/hermes-labs-ai/zer0dex) — Local agent recall without burdening the context window.
 - [claude-plugins marketplace](https://github.com/hermes-labs-ai/claude-plugins) — Plugin system for Claude Code extensibility.
 
+Browse the [open-source catalog](https://hermes-labs.ai/open-source) or contact [roli@hermes-labs.ai](mailto:roli@hermes-labs.ai).
+
 ## License
 
 Apache-2.0
-
----
-
-## About Hermes Labs
-
-[Hermes Labs](https://hermes-labs.ai) is an AI reliability engineering studio for product and engineering teams shipping production agents and LLM applications. We find the structural AI failures standard evals miss, then harden retrieval, memory, agents, and the language layers around production AI systems with runtime controls and defensible evidence.
-
-Browse the [open-source catalog](https://hermes-labs.ai/open-source) or contact [roli@hermes-labs.ai](mailto:roli@hermes-labs.ai).
