@@ -1,15 +1,21 @@
-# quickthink
+<div align="center">
+
+<h1>quickthink</h1>
+
+**quickthink is a local-first CLI and Python library that wraps Ollama-backed LLM calls with a compressed plan-then-answer scaffold and latency-aware routing.**
+
+quickthink is developed by [Hermes Labs](https://hermes-labs.ai).
+
+Hermes Labs is an agentic infrastructure company building the reliability layer for autonomous systems.
 
 [![CI](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 [![PyPI](https://img.shields.io/pypi/v/quickthink.svg)](https://pypi.org/project/quickthink/)
 
-**quickthink is a local-first CLI and Python library that wraps Ollama-backed LLM calls with a compressed plan-then-answer scaffold and latency-aware routing.** It adds a short, validated planning step before the answer for prompts that look multi-step, and routes simple prompts straight through to the model.
+</div>
 
-quickthink is developed by [Hermes Labs](https://hermes-labs.ai).
-
-Hermes Labs studies failure modes in agent and LLM systems, develops open-source tools that treat language as part of the runtime, and works with teams to remediate reliability failures in production.
+It adds a short, validated planning step before the answer for prompts that look multi-step, and routes simple prompts straight through to the model.
 
 It currently ships as a lightweight scaffolding layer for local LLMs with three modes:
 - `lite` (default): one-pass inline plan prefix + answer in a single generation
