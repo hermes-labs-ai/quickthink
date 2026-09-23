@@ -78,6 +78,24 @@ quickthink ask "Give me a 3-step plan to learn SQL basics" --model qwen2.5:1.5b
 
 If this command works, your local setup is ready.
 
+### GitHub Copilot CLI plugin
+
+Copilot CLI users can install the repository as a plugin to make the existing
+`quickthink` skill available in any project:
+
+```bash
+copilot plugin marketplace add hermes-labs-ai/quickthink
+copilot plugin install quickthink@quickthink
+copilot plugin list
+```
+
+In Copilot CLI, invoke `/quickthink` when you want to route a prompt through a
+local Ollama model. The plugin supplies usage instructions, not the runtime:
+install `quickthink==0.2.2`, start Ollama, and pull a supported model as shown
+above. The skill also offers `quickthink ask ... --dry-run` to inspect routing
+without calling a model. Plugin installation does not send prompts to a hosted
+inference service.
+
 For development, clone the repository and install the editable development extras:
 
 ```bash
