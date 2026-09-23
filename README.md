@@ -45,7 +45,7 @@ What this is not:
 ## Why
 
 Small/local models are fast but often underperform on multi-step tasks.
-`quickthink` adds a strict planning pass (6-16 keyword tokens by default) to improve response quality without full verbose reasoning traces.
+`quickthink` adds a strict planning pass (6–16 keyword tokens by default), intended to help with multi-step response quality without full verbose reasoning traces; whether it helps depends on the model and task.
 
 ## Features
 
