@@ -1,0 +1,12 @@
+{
+  "name": "quickthink",
+  "version": "0.2.2",
+  "description": "Use local Ollama models with quickthink's bounded planning and latency-aware routing.",
+  "author": {
+    "name": "Hermes Labs",
+    "url": "https://hermes-labs.ai"
+  },
+  "repository": "https://github.com/hermes-labs-ai/quickthink",
+  "license": "Apache-2.0",
+  "skills": ".agents/skills/"
+}
