@@ -82,4 +82,4 @@ quickthink bench "Design a robust parser for CSV with malformed quotes" --model 
 ## More
 
 Full docs and CLI reference:
-https://github.com/hermes-labs-ai/quickthink
+https://github.com/roli-lpci/quickthink

@@ -1,7 +1,16 @@
 # Experiment Registry Index
 
 ## Purpose
-Canonical run list with one file per run trace.
+Historical run list with references to individual traces.
+
+**Archive availability:** 20 referenced trace files are absent from this checkout.
+The retained trace is `run_qwen15_v11_instr_n8_rerun_2026-02-27`. The `active` and
+`reference` statuses below are historical classifications; they do not assert
+that a trace is currently available or independently reproducible. Rows remain
+for provenance. Run `scripts/check_research_hygiene.sh` from the repository root
+for the missing-file list and see
+[`RESEARCH_HYGIENE_PROTOCOL.md`](../../docs/research/RESEARCH_HYGIENE_PROTOCOL.md)
+for the archive's verification limits.
 
 | track | run_id | status | models | runs | trace_file |
 |---|---|---|---|---:|---|
@@ -26,4 +35,3 @@ Canonical run list with one file per run trace.
 | philo_assumption_challenge | run_mistral_n1_smoke | reference | mistral:7b | 1 | `experiments-local/registry/run_philo_assumption_challenge__run_mistral_n1_smoke.md` |
 | philo_assumption_challenge | run_catalog | reference | multi | n/a | `experiments-local/registry/run_philo_assumption_challenge__run_catalog.md` |
 | anthropic_baseline | haiku45_no_canary_2026-02-26 | reference | claude-haiku-4-5 | 220 prompts | `experiments-local/registry/run_anthropic_baseline__haiku45_no_canary_2026-02-26.md` |
-| research_orchestration | session_recovery_2026-02-27 | reference | multi | n/a | `experiments-local/registry/run_research_orchestration__session_recovery_2026-02-27.md` |

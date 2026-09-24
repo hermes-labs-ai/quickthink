@@ -6,7 +6,7 @@
     "name": "Hermes Labs",
     "url": "https://hermes-labs.ai"
   },
-  "repository": "https://github.com/hermes-labs-ai/quickthink",
+  "repository": "https://github.com/roli-lpci/quickthink",
   "license": "Apache-2.0",
   "skills": ".agents/skills/"
 }
