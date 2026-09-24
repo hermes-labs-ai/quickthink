@@ -1,23 +1,10 @@
-# Folder Map
+# Repository layout
 
-## Canonical Project Root
-- `<local-workspace>/QuickThink`
+- `src/quickthink/`: runtime package and CLI.
+- `scripts/eval_harness/`: canonical evaluation pipeline.
+- `tests/`: runtime and harness checks.
+- `docs/`: product, evaluation, and release documentation.
+- `experiments-local/`: historical experiment artifacts and run registry.
 
-## What Lives Here
-- Code: `src/`, `scripts/`, `tests/`
-- Project docs: `docs/`
-- Local experiment artifacts: `experiments-local/`
-
-## Aliases / Links
-- `<local-workspace>/New project` -> `<local-workspace>/QuickThink`
-
-## Archived Copy
-- `<local-workspace>/Archive/QuickThink_ARCHIVE_2026-02-26`
-
-## Hermes Site
-- Canonical location: `<local-workspace>/Hermes Labs Website/hermeslabs-site`
-- Compatibility link inside repo: `hermeslabs-site` (symlink)
-
-## Agent Research Notes
-- `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
-- Project-local pointer: `experiments-local/RESEARCH_NOTES_LIVE.md`
+Clone into a directory of your choice. Run commands from the repository root.
+Start with `README.md`, `AGENTS.md`, and `docs/MARKDOWN_INDEX.md`.

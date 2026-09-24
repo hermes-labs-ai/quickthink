@@ -3,7 +3,7 @@
   "@type": "SoftwareSourceCode",
   "name": "quickthink",
   "description": "Local-first inference control layer that improves structured-output reliability for small, on-device LLMs with a compressed plan-then-answer scaffold and latency-aware routing in front of Ollama-backed calls.",
-  "codeRepository": "https://github.com/hermes-labs-ai/quickthink",
+  "codeRepository": "https://github.com/roli-lpci/quickthink",
   "version": "0.2.2",
   "license": "https://spdx.org/licenses/Apache-2.0",
   "programmingLanguage": "Python",

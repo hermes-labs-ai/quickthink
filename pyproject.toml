@@ -39,10 +39,10 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://hermes-labs.ai"
-Repository = "https://github.com/hermes-labs-ai/quickthink"
-Documentation = "https://github.com/hermes-labs-ai/quickthink#readme"
-Changelog = "https://github.com/hermes-labs-ai/quickthink/blob/main/CHANGELOG.md"
-Issues = "https://github.com/hermes-labs-ai/quickthink/issues"
+Repository = "https://github.com/roli-lpci/quickthink"
+Documentation = "https://github.com/roli-lpci/quickthink#readme"
+Changelog = "https://github.com/roli-lpci/quickthink/blob/main/CHANGELOG.md"
+Issues = "https://github.com/roli-lpci/quickthink/issues"
 
 [project.optional-dependencies]
 dev = [

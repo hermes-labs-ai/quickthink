@@ -18,8 +18,8 @@ authors:
 version: "0.2.2"
 date-released: "2026-09-11"
 license: Apache-2.0
-repository-code: "https://github.com/hermes-labs-ai/quickthink"
-url: "https://github.com/hermes-labs-ai/quickthink"
+repository-code: "https://github.com/roli-lpci/quickthink"
+url: "https://github.com/roli-lpci/quickthink"
 keywords:
   - "AI reliability"
   - "LLM reliability"

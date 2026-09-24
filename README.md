@@ -8,7 +8,7 @@ quickthink is developed by [Hermes Labs](https://hermes-labs.ai).
 
 Hermes Labs is an agentic infrastructure company building the reliability layer for autonomous systems.
 
-[![CI](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml/badge.svg)](https://github.com/hermes-labs-ai/quickthink/actions/workflows/ci.yml)
+[![CI](https://github.com/roli-lpci/quickthink/actions/workflows/ci.yml/badge.svg)](https://github.com/roli-lpci/quickthink/actions/workflows/ci.yml)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](pyproject.toml)
 [![PyPI](https://img.shields.io/pypi/v/quickthink.svg)](https://pypi.org/project/quickthink/)
@@ -90,7 +90,7 @@ Copilot CLI users can install the repository as a plugin to make the existing
 `quickthink` skill available in any project:
 
 ```bash
-copilot plugin marketplace add hermes-labs-ai/quickthink
+copilot plugin marketplace add roli-lpci/quickthink
 copilot plugin install quickthink@quickthink
 copilot plugin list
 ```
@@ -105,7 +105,7 @@ inference service.
 For development, clone the repository and install the editable development extras:
 
 ```bash
-git clone https://github.com/hermes-labs-ai/quickthink.git
+git clone https://github.com/roli-lpci/quickthink.git
 cd quickthink
 python -m pip install -e '.[dev]'
 ```
@@ -387,7 +387,7 @@ Grounded in how the code actually behaves:
 - [fidelis](https://github.com/hermes-labs-ai/fidelis) — Semantic memory for long-running agents with local retrieval.
 - [hermeneutic](https://github.com/hermes-labs-ai/hermeneutic) — Detect recurring AI drift from correction history.
 - [zer0dex](https://github.com/hermes-labs-ai/zer0dex) — Local agent recall without burdening the context window.
-- [claude-plugins marketplace](https://github.com/hermes-labs-ai/claude-plugins) — Plugin system for Claude Code extensibility.
+- [Hermes Labs plugins marketplace](https://github.com/hermes-labs-ai/plugins) — Plugin system for Claude Code extensibility.
 
 Browse the [open-source catalog](https://hermes-labs.ai/open-source) or contact [roli@hermes-labs.ai](mailto:roli@hermes-labs.ai).
 

@@ -1,7 +1,8 @@
 # Cognitive Infra Validation Program v1 (QuickThink)
 
 ## Status
-Active research program (cross-agent continuity document).
+Historical proposed research program. Consult the linked result artifacts for
+which experiments were completed.
 
 ## Purpose
 Build statistically grounded evidence for cognitive-infrastructure scaffolds that improve quality without hidden regressions, while preserving latency and interpretability.
@@ -52,7 +53,6 @@ Goal:
 - Run artifacts (`run_results.jsonl`, `judged_results.jsonl`, `summary.json`, `summary.md`)
 - Per-group gate report with wins/losses/ties and p-values
 - Ablation report with ranking and retention recommendation
-- Shared log entries in `<local-workspace>/codex folder/research/quickthink/RESEARCH_NOTES_LIVE.md`
 
 ## Commands
 Primary confirmation command template:

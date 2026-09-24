@@ -8,10 +8,10 @@ Single entrypoint for important Markdown files in this repository.
 - `FOLDER_MAP.md` (repo path map)
 - `docs/MARKDOWN_SYSTEM.md` (markdown governance)
 - `docs/README.md` (docs navigation)
-- `docs/AGENT_BOOTSTRAP.md` (new-session bootstrap)
+- `docs/AGENT_BOOTSTRAP.md` (contributor starting points)
 - `docs/research/R_AND_D_LEDGER.md` (cross-session research ledger)
 - `docs/research/DECISION_GATES.md` (fixed decision thresholds)
-- `docs/SESSION_CLOSEOUT_CHECKLIST.md` (mandatory session closeout)
+- `docs/SESSION_CLOSEOUT_CHECKLIST.md` (research contribution checklist)
 - `experiments-local/registry/INDEX.md` (canonical run registry index)
 
 ## Canonical Product/Release Docs
@@ -26,14 +26,13 @@ Single entrypoint for important Markdown files in this repository.
 - `docs/release/RELEASE_CHECKLIST.md`
 
 ## Active Research (High Priority)
-- `docs/research/RESEARCH_HYGIENE_PROTOCOL.md` (anti-drift protocol)
+- `docs/research/RESEARCH_HYGIENE_PROTOCOL.md` (documentation checks)
 - `docs/research/R_AND_D_LEDGER.md`
 - `docs/research/gate_decision_spec_2026-02-25.md`
 - `docs/research/model_lane_strategy_2026-02-25.md`
 - `docs/research/integration_hardening_report_2026-02-25.md`
 - `docs/research/codex/philosophy/philo_researcher_1_notes.md`
 - `docs/research/instruction_lane_iterative_loop_2026-02-27.md`
-- `docs/research/THREAD_RECOVERY_MAP_2026-02-27.md`
 
 ## Active Experiment Track
 - `experiments-local/operations/CONFIDENCE_UPGRADE_PLAN_V1.md`

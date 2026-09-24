@@ -39,7 +39,7 @@ Requires Ollama running locally: https://ollama.com/
 **Contributor route (development):**
 
 ```bash
-git clone https://github.com/hermes-labs-ai/quickthink.git
+git clone https://github.com/roli-lpci/quickthink.git
 cd quickthink
 pip install -e '.[dev]'
 ```
@@ -78,7 +78,7 @@ quickthink list-presets
 
 ## Source
 
-https://github.com/hermes-labs-ai/quickthink
+https://github.com/roli-lpci/quickthink
 Apache-2.0. Part of the Hermes Labs reliability layer for autonomous systems.
 
 

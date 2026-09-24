@@ -28,7 +28,7 @@ quickthink ask "Give me a 3-step plan to learn SQL basics" --model qwen2.5:1.5b
 Before publication, install directly from the repository instead:
 
 ```bash
-python -m pip install "quickthink @ git+https://github.com/hermes-labs-ai/quickthink.git"
+python -m pip install "quickthink @ git+https://github.com/roli-lpci/quickthink.git"
 ```
 
 ## Requirements and limits
@@ -39,6 +39,6 @@ python -m pip install "quickthink @ git+https://github.com/hermes-labs-ai/quickt
 
 ## Links
 
-- [Quickstart](https://github.com/hermes-labs-ai/quickthink#5-minute-quickstart)
-- [Known limitations](https://github.com/hermes-labs-ai/quickthink/blob/main/docs/KNOWN_LIMITATIONS.md)
-- [Release process](https://github.com/hermes-labs-ai/quickthink/blob/main/docs/release/RELEASE_PROCESS.md)
+- [Quickstart](https://github.com/roli-lpci/quickthink#5-minute-quickstart)
+- [Known limitations](https://github.com/roli-lpci/quickthink/blob/main/docs/KNOWN_LIMITATIONS.md)
+- [Release process](https://github.com/roli-lpci/quickthink/blob/main/docs/release/RELEASE_PROCESS.md)
